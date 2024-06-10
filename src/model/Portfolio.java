@@ -119,13 +119,13 @@ public class Portfolio implements IPortfolio {
     return updatedStockForDate;
   }
 
+  // hello
   private void updateCurrentStock() {
     HashMap<String, StockShares> newCurrentStockShare = new HashMap<>();
 
     for(Map.Entry<String, StockShares> entry : currentStocksShareMap.entrySet()) {
       String ticker = entry.getKey();
       int currentShares = entry.getValue().getShares();
-      D
     }
 
   }
