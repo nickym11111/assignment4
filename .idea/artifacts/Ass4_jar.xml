@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="Ass4:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Ass4_jar</output-path>
+    <root id="archive" name="Assignment4OOD.jar">
+      <element id="module-output" name="Assignment4OOD" />
+      <element id="extracted-dir" path="$USER_HOME$/Downloads/json-20140107.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
