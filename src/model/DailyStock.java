@@ -5,7 +5,8 @@ import java.util.Objects;
 
 /**
  * Class that represents the daily stock data for a specific stock with the tickerSymbol,
- * date, open value, high value, low val.
+ * date, open value, high value, low val and allows methods to obtain information about the
+ * daily stock.
  * INVARIANT: The stock price throughout the day must be greater than or equal to 0.
  */
 public class DailyStock {

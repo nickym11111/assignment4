@@ -3,7 +3,6 @@ import org.junit.Test;
 
 import java.io.FileNotFoundException;
 import java.time.LocalDate;
-import java.util.ArrayList;
 
 import command.ValuePortfolio;
 import command.readerbuilder.FileStockDataStreamImpl;
@@ -52,11 +51,11 @@ public class ValuePortfolioTest {
 
     StockShares stockShares = new StockShares(5, this.stock);
 
-    portfolio.getStocksShareMap().put("GOOG", stockShares);
+    portfolio.getStockShareMap().put("GOOG", stockShares);
 
     assertEquals("Technology", portfolio.getName());
 
-    assertEquals(5, portfolio.getStocksShareMap().get("GOOG").getShares());
+    assertEquals(5, portfolio.getStockShareMap().get("GOOG").getShares());
   }
 
 

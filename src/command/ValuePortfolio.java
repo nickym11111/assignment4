@@ -1,6 +1,5 @@
 package command;
 
-import java.io.FileNotFoundException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Map;
@@ -61,22 +60,20 @@ public class ValuePortfolio implements IPortfolioStrategies {
    * @return a double representing the value for that portfolio at the given date
    */
 
-  public double getPortfolioValue(LocalDate date, IPortfolio portfolio)
-          throws FileNotFoundException {
+  public double getPortfolioValue(LocalDate date, IPortfolio portfolio) {
     DateUtil d = new DateUtil();
     if (d.isWeekend(date)) {
       date = d.getNearestAvailableDate(date);
     }
     double totalValue = 0.0;
-    for (Map.Entry<String, StockShares> entry : portfolio.portfolioStateAtDate(date).entrySet()) {
+    for (Map.Entry<String, StockShares> entry : portfolio.getStockShareMap().entrySet()) {
       IStock stock = entry.getValue().getStock();
-      int shares = entry.getValue().getShares();
+      double shares = entry.getValue().getShares(); // changed to double
       double priceOnDate = stock.getStockValue(date);
       if (priceOnDate > 0) {
         totalValue += priceOnDate * shares;
       } else {
-        throw new IllegalArgumentException("No price available for stock: "
-                + stock.getTickerSymbol()
+        throw new IllegalArgumentException("No price available for stock: " + stock.getTickerSymbol()
                 + " on date: " + date);
       }
     }

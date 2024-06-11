@@ -47,14 +47,14 @@ public interface IStockMarket {
    * @param name the name of the portfolio to retrieve
    * @return the portfolio with the specified name, or null if not found
    */
-  IPortfolio getPortfolio(String name);
+  ISmartPortfolio getPortfolio(String name);
 
   /**
    * Retrieves all portfolios in the stock market.
    *
    * @return a map of portfolio names to portfolio objects
    */
-  HashMap<String, IPortfolio> getPortfolios();
+  HashMap<String, ISmartPortfolio> getPortfolios();
 
   /**
    * Retrieves all stocks in the stock market.

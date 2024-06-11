@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.util.HashMap;
 
 import model.IPortfolio;
+import model.ISmartPortfolio;
 import model.IStock;
 import model.Stock;
 import model.StockMarket;
@@ -69,7 +70,7 @@ public class StockMarketTest {
   public void testGetPortfolios() {
     stockMarket.addPortfolio("Tech");
     stockMarket.addPortfolio("Health");
-    HashMap<String, IPortfolio> portfolios = stockMarket.getPortfolios();
+    HashMap<String, ISmartPortfolio> portfolios = stockMarket.getPortfolios();
 
     assertTrue(portfolios.containsKey("Tech"));
     assertTrue(portfolios.containsKey("Health"));

@@ -8,7 +8,7 @@ import java.util.HashMap;
  */
 public class StockMarket implements IStockMarket {
   private HashMap<String, IStock> stocks;
-  private HashMap<String, IPortfolio> portfolios;
+  private HashMap<String, ISmartPortfolio> portfolios;
 
   /**
    * Constructs a new StockMarket object.
@@ -59,7 +59,7 @@ public class StockMarket implements IStockMarket {
    * @param name the name of the portfolio to add
    */
   public void addPortfolio(String name) {
-    portfolios.put(name, new Portfolio(name));
+    portfolios.put(name, new SmartPortfolio(name));
   }
 
   /**
@@ -68,7 +68,7 @@ public class StockMarket implements IStockMarket {
    * @param name the name of the portfolio to get
    * @return the portfolio with the given name
    */
-  public IPortfolio getPortfolio(String name) {
+  public ISmartPortfolio getPortfolio(String name) {
     return portfolios.get(name);
   }
 
@@ -77,7 +77,7 @@ public class StockMarket implements IStockMarket {
    *
    * @return a map of portfolio names to portfolios
    */
-  public HashMap<String, IPortfolio> getPortfolios() {
+  public HashMap<String, ISmartPortfolio> getPortfolios() {
     return portfolios;
   }
 

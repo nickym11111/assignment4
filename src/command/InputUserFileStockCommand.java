@@ -1,5 +1,6 @@
 package command;
 
+import java.time.LocalDate;
 import java.util.Scanner;
 
 import command.readerbuilder.FileStockDataStreamImpl;
@@ -20,6 +21,7 @@ public class InputUserFileStockCommand extends ACommand {
   boolean inPortfolio = false;
   String portfolioName = "";
   int shares = 0;
+  LocalDate date = LocalDate.now();
 
   /**
    * InputUserFileStockCommand creates a InputUserFileStockCommand
@@ -42,10 +44,11 @@ public class InputUserFileStockCommand extends ACommand {
    * @param name   represents the name of the portfolio
    * @param shares represents the shares of the portfolio
    */
-  public void setToPortFolio(String name, int shares) {
+  public void setToPortFolio(String name, int shares, LocalDate date) {
     this.inPortfolio = true;
     this.portfolioName = name;
     this.shares = shares;
+    this.date = date;
   }
 
   /**
@@ -77,7 +80,7 @@ public class InputUserFileStockCommand extends ACommand {
       IStockBuilder stockBuilder = new StockBuilderImpl();
       IStock stock = stockBuilder.buildStock(tickerSymbol, data);
       if (inPortfolio) {
-        myStockMarket.getPortfolio(portfolioName).addStockShare(tickerSymbol, stock, shares);
+        myStockMarket.getPortfolio(portfolioName).addStockShare(tickerSymbol, stock, shares, date);
       } else {
         myStockMarket.addStock(tickerSymbol, stock);
       }

@@ -73,9 +73,9 @@ public class StockMarketMock implements IStockMarket {
    * @return a new Portfolio object with the specified name
    */
   @Override
-  public IPortfolio getPortfolio(String name) {
+  public ISmartPortfolio getPortfolio(String name) {
     this.log.append("getPortfolio (").append(name).append(") ");
-    return new Portfolio(name);
+    return new SmartPortfolio(name);
   }
 
 
@@ -86,7 +86,7 @@ public class StockMarketMock implements IStockMarket {
    * @return an empty HashMap
    */
   @Override
-  public HashMap<String, IPortfolio> getPortfolios() {
+  public HashMap<String, ISmartPortfolio> getPortfolios() {
     this.log.append("getPortfolios (").append("Got portfolios) ");
     return new HashMap<>();
   }

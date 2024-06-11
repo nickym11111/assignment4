@@ -6,7 +6,10 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Represents a stock with historical daily stock data.
+ * Represents a stock with historical daily stock data. Such as the
+ * earliest date of the stock, if the date does exist for the stock,
+ * keeps track of the ticker symbol of the stock, and allows for more daily
+ * stocks to be added to the stock
  */
 public class Stock implements IStock {
   protected Map<LocalDate, DailyStock> allStocks;

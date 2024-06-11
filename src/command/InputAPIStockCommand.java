@@ -1,6 +1,7 @@
 package command;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.Scanner;
 
 import command.readerbuilder.APIStockDataStreamImpl;
@@ -19,10 +20,10 @@ import view.IView;
  * is quit.
  */
 public class InputAPIStockCommand extends ACommand {
-
   boolean inPortfolio = false;
   String portfolioName = "";
   int shares = 0;
+  LocalDate date = LocalDate.now();
 
   /**
    * InputAPIStockCommand creates a InputAPIStockCommand
@@ -46,10 +47,11 @@ public class InputAPIStockCommand extends ACommand {
    * @param name   represents the name of the portfolio
    * @param shares represents the shares of the portfolio
    */
-  public void setToPortFolio(String name, int shares) {
+  public void setToPortFolio(String name, int shares, LocalDate date) {
     this.inPortfolio = true;
     this.portfolioName = name;
     this.shares = shares;
+    this.date = date;
   }
 
   /**
@@ -77,7 +79,7 @@ public class InputAPIStockCommand extends ACommand {
       IStockBuilder stockBuilder = new StockBuilderImpl();
       IStock stock = stockBuilder.buildStock(userInstruction, data);
       if (inPortfolio) {
-        myStockMarket.getPortfolio(portfolioName).addStockShare(userInstruction, stock, shares);
+        myStockMarket.getPortfolio(portfolioName).addStockShare(userInstruction, stock, shares, date);
       } else {
         myStockMarket.addStock(userInstruction, stock);
       }

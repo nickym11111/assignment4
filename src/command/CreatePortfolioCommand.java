@@ -1,6 +1,7 @@
 package command;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -69,8 +70,22 @@ public class CreatePortfolioCommand extends ACommand {
             share = s.nextInt();
           }
           // add catch exception here
+          view.writeMessage("Please enter the date you'd like to buy this stock on: (YYYY-MM-DD)"
+          + System.lineSeparator());
+          LocalDate start = null;
+          boolean gotDate = false;
+          while (!gotDate) {
+            try {
+              start = LocalDate.parse(s.next());
+              gotDate = true;
+            } catch (Exception e) {
+              view.writeMessage("Invalid input, enter a valid date" +
+                      " (YYYY-MM-DD) ");
+            }
+          }
+
           InputStockCommand createStock = new InputStockCommand(view, s);
-          createStock.setToPortFolio(portName, share);
+          createStock.setToPortFolio(portName, share, start);
           createStock.run(myStockMarket);
 
         } catch (InputMismatchException e) {

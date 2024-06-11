@@ -13,7 +13,7 @@ import static org.junit.Assert.assertTrue;
 /**
  * A test class that guarantees that shares are properly  being stored.
  */
-public class StockSharesTest extends ModelDataTest {
+public class StockSharesTest {
   private StockShares stockShares1;
   private StockShares stockShares2;
   private StockShares stockShares3;

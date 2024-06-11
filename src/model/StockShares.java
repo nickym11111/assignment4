@@ -5,13 +5,12 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 /**
- * Represents the shares of a stock.
+ * Represents the shares of a stock. Allows to obtain the information
+ * of the stock such as the share and stock.
  */
-public class StockShares {
-  private int shares;
+public class StockShares implements IStockShares {
+  private double shares;
   private IStock stock;
-  private LocalDate date;
-  private boolean bought;
 
 
   /**
@@ -21,7 +20,7 @@ public class StockShares {
    * @param stock  the stock associated with the shares
    * @throws FileNotFoundException if the stock file is not found
    */
-  public StockShares(int shares, IStock stock) throws FileNotFoundException {
+  public StockShares(double shares, IStock stock) throws FileNotFoundException {
     this.shares = shares;
     this.stock = stock;
   }
@@ -31,7 +30,7 @@ public class StockShares {
    *
    * @return the number of shares
    */
-  public int getShares() {
+  public double getShares() {
     return shares;
   }
 
@@ -67,7 +66,6 @@ public class StockShares {
    *
    * @return a string representation of the object
    */
-
   @Override
   public String toString() {
     return "StockShares" +
@@ -83,22 +81,6 @@ public class StockShares {
   @Override
   public int hashCode() {
     return Objects.hash(shares, stock);
-  }
-
-  public LocalDate getDate() {
-    return date;
-  }
-
-  public void setDate(LocalDate date) {
-    this.date = date;
-  }
-
-  public boolean isBought() {
-    return bought;
-  }
-
-  public void setBought(boolean bought) {
-    this.bought = bought;
   }
 
 }

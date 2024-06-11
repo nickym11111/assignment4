@@ -72,7 +72,7 @@ public class APIStockDataStreamImpl implements IStockDataStream {
     }
 
     if (correctString && correctURL) {
-      try (FileWriter writer = new FileWriter("src/stocks/" + ticker + ".csv")) {
+      try (FileWriter writer = new FileWriter("stocks/" + ticker + ".csv")) { // change
         writer.write(output.toString());
       } catch (IOException e) {
         e.printStackTrace();

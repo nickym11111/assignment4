@@ -1,6 +1,7 @@
 package command;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.Scanner;
 
 import model.IStockMarket;
@@ -18,6 +19,7 @@ public class InputStockCommand extends ACommand {
   boolean inPortfolio = false;
   String portfolioName = "";
   int shares = 0;
+  LocalDate date = LocalDate.now();
 
   /**
    * InputStockCommand creates a InputStockCommand
@@ -41,10 +43,11 @@ public class InputStockCommand extends ACommand {
    * @param name   represents the name of the portfolio
    * @param shares represents the shares of the portfolio
    */
-  public void setToPortFolio(String name, int shares) {
+  public void setToPortFolio(String name, int shares, LocalDate date) {
     this.inPortfolio = true;
     this.portfolioName = name;
     this.shares = shares;
+    this.date = date;
   }
 
 
@@ -68,7 +71,7 @@ public class InputStockCommand extends ACommand {
         case "f":
           InputUserFileStockCommand fileStock = new InputUserFileStockCommand(view, s);
           if (inPortfolio) {
-            fileStock.setToPortFolio(portfolioName, shares);
+            fileStock.setToPortFolio(portfolioName, shares, date);
             fileStock.run(myStockMarket);
             back = true;
           } else {
@@ -78,7 +81,7 @@ public class InputStockCommand extends ACommand {
         case "a":
           InputAPIStockCommand apiStock = new InputAPIStockCommand(view, s);
           if (inPortfolio) {
-            apiStock.setToPortFolio(portfolioName, shares);
+            apiStock.setToPortFolio(portfolioName, shares, date);
             apiStock.run(myStockMarket);
             back = true;
           } else {

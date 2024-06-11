@@ -1,4 +1,3 @@
-import org.junit.Before;
 import org.junit.Test;
 
 import java.io.FileNotFoundException;
@@ -20,22 +19,17 @@ import static org.junit.Assert.assertEquals;
  * property works and can be obtained.
  */
 public class PortfolioTest {
-  private IStockBuilder amazonBuilder;
-  private IStockDataStream fileReaderAmazon;
-  private IPortfolio portfolio;
-  private IStock amazonStock;
+   String filePath = "src/stocks/AMZN.csv";
+   IStockBuilder amazonBuilder = new StockBuilderImpl();
+   IStockDataStream fileReaderAmazon = new FileStockDataStreamImpl(filePath);
+   IStock amazonStock = amazonBuilder.buildStock("AMZN", fileReaderAmazon);
+   IPortfolio portfolio =  new Portfolio("Technology");
 
 
 
 
 
-  @Before
-  public void setUp() {
-    this.amazonBuilder = new StockBuilderImpl();
-    this.fileReaderAmazon = new FileStockDataStreamImpl("stocks/AMZN.csv");
-    this.amazonStock = amazonBuilder.buildStock("AMZN", fileReaderAmazon);
-    this.portfolio = new Portfolio("Technology");
-  }
+
 
 
   @Test
@@ -44,7 +38,7 @@ public class PortfolioTest {
     this.portfolio.addStockShare("AMZN", this.amazonStock, 5);
 
 
-    assertEquals(expected, this.portfolio.getStocksShareMap().get("AMZN"));
+    assertEquals(expected, this.portfolio.getStockShareMap().get("AMZN"));
   }
 
   @Test
@@ -55,7 +49,7 @@ public class PortfolioTest {
     expectedMap.put("AMZN", expected);
 
 
-    assertEquals(expectedMap, this.portfolio.getStocksShareMap());
+    assertEquals(expectedMap, this.portfolio.getStockShareMap());
   }
 
 

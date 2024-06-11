@@ -92,6 +92,9 @@ public class CheckSpecificPortfolioCommand extends ACommand {
             + System.lineSeparator());
     view.writeMessage("Enter 'b' to go back to previous options"
             + System.lineSeparator());
+    view.writeMessage("Enter 'buy' to buy a stock for the portfolio"
+            + System.lineSeparator());
+
   }
 
   // prints the message for when a user inputted a non-existent portfolio name,
