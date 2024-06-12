@@ -53,8 +53,8 @@ public class ViewPortfolioCommand extends ACommand {
     }
     boolean back = false;
     while (!back) {
-      view.writeMessage("Enter a 'p' to check value of a portfolio"
-              + System.lineSeparator());
+      view.writeMessage("Enter a 'p' to sell, buy, or view portfolio information about a specific " +
+              "portfolio"  + System.lineSeparator());
       view.writeMessage("Enter 'b' to go back to previous options"
               + System.lineSeparator());
 

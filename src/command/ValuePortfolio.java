@@ -7,6 +7,8 @@ import java.util.Objects;
 import java.util.Scanner;
 
 import model.IPortfolio;
+import model.ISmartPortfolio;
+import model.ISmartStockShares;
 import model.IStock;
 import model.StockShares;
 import view.IView;
@@ -26,8 +28,7 @@ public class ValuePortfolio implements IPortfolioStrategies {
    *
    * @param out represents an IView field which holds program output
    */
-  public ValuePortfolio(IView out) {
-    this.out = Objects.requireNonNull(out);
+  public ValuePortfolio(IView out) {this.out = Objects.requireNonNull(out);
   }
 
   /**
@@ -40,13 +41,14 @@ public class ValuePortfolio implements IPortfolioStrategies {
    * @param portfolio represents an portfolio object
    */
   @Override
-  public void stratGo(Scanner s, IPortfolio portfolio) {
+  public void stratGo(Scanner s, ISmartPortfolio portfolio) {
     try {
       LocalDate date = LocalDate.parse(s.next());
-      out.writeMessage(getPortfolioValue(date, portfolio) + " ");
+      out.writeMessage(getPortfolioValue(date, portfolio) + " is the value of this portfolio"
+      + System.lineSeparator());
 
     } catch (Exception e) {
-      out.writeMessage("Invalid input, enter a valid date (YYYY-MM-DD)");
+      out.writeMessage("Invalid input, enter a valid date (YYYY-MM-DD)" + System.lineSeparator());
     }
   }
 
@@ -60,20 +62,27 @@ public class ValuePortfolio implements IPortfolioStrategies {
    * @return a double representing the value for that portfolio at the given date
    */
 
-  public double getPortfolioValue(LocalDate date, IPortfolio portfolio) {
+  public double getPortfolioValue(LocalDate date, ISmartPortfolio portfolio) {
     DateUtil d = new DateUtil();
+    if(date.isBefore(portfolio.getDateCreated()))
+    {
+      return 0.0;
+    }
     if (d.isWeekend(date)) {
       date = d.getNearestAvailableDate(date);
     }
+    System.out.println(portfolio.getDateCreated());
     double totalValue = 0.0;
-    for (Map.Entry<String, StockShares> entry : portfolio.getStockShareMap().entrySet()) {
+    for (Map.Entry<String, ISmartStockShares> entry :
+            portfolio.getCurrentStockSharesMap().entrySet()) {
       IStock stock = entry.getValue().getStock();
       double shares = entry.getValue().getShares(); // changed to double
       double priceOnDate = stock.getStockValue(date);
       if (priceOnDate > 0) {
         totalValue += priceOnDate * shares;
       } else {
-        throw new IllegalArgumentException("No price available for stock: " + stock.getTickerSymbol()
+        throw new IllegalArgumentException("No price available for stock: "
+                + stock.getTickerSymbol()
                 + " on date: " + date);
       }
     }

@@ -1,8 +1,9 @@
 package command;
 
+import java.io.IOException;
 import java.util.Scanner;
 
-import model.IPortfolio;
+import model.ISmartPortfolio;
 import model.IStockMarket;
 import view.IView;
 
@@ -36,7 +37,7 @@ public class CheckSpecificPortfolioCommand extends ACommand {
    * @param myStockMarket represents the current stock market for the command to access and
    *                      obtain data from.
    */
-  public void run(IStockMarket myStockMarket) {
+  public void run(IStockMarket myStockMarket) throws IOException {
     boolean back = false;
     view.writeMessage("Enter name of portfolio" + System.lineSeparator());
     String userInstruction = s.next();
@@ -47,7 +48,7 @@ public class CheckSpecificPortfolioCommand extends ACommand {
         return;
       }
     }
-    IPortfolio portfolio = myStockMarket.getPortfolios().get(userInstruction);
+    ISmartPortfolio portfolio = myStockMarket.getPortfolios().get(userInstruction);
     while (!back) {
       printPortfolioCalculations();
       userInstruction = s.next();
@@ -58,8 +59,18 @@ public class CheckSpecificPortfolioCommand extends ACommand {
         case "v":
           printEvalutePortfolioInstructions();
           new ValuePortfolio(view).stratGo(s, portfolio);
-          view.writeMessage(" is the value of this portfolio"
-                  + System.lineSeparator());
+          break;
+        case "c":
+          new PortfolioCompositionCommand(view, s, portfolio).run(myStockMarket);
+          break;
+        case "d":
+          new PortfolioDistributionCommand(view, s, portfolio).run(myStockMarket);
+          break;
+        case "buy":
+          new BuyStockCommand(view, s, portfolio).run(myStockMarket);
+          break;
+        case "sell":
+          new SellStockCommand(view, s, portfolio).run(myStockMarket);
           break;
         default:
           view.writeMessage("Undefined instruction: " + userInstruction +
@@ -90,9 +101,17 @@ public class CheckSpecificPortfolioCommand extends ACommand {
     view.writeMessage("Enter 'v' to get the value of this portfolio " +
             "on a specific date"
             + System.lineSeparator());
+    view.writeMessage("Enter 'c' to get the composition of this portfolio " +
+            "on a specific date"
+            + System.lineSeparator());
+    view.writeMessage("Enter 'd' to get the distribution of this portfolio " +
+            "on a specific date"
+            + System.lineSeparator());
     view.writeMessage("Enter 'b' to go back to previous options"
             + System.lineSeparator());
     view.writeMessage("Enter 'buy' to buy a stock for the portfolio"
+            + System.lineSeparator());
+    view.writeMessage("Enter 'sell' to sell stocks from the portfolio"
             + System.lineSeparator());
 
   }

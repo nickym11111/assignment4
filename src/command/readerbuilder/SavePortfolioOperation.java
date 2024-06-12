@@ -34,11 +34,12 @@ public class SavePortfolioOperation {
   public void run() {
     File theDir = new File(port + portfolio.getName());
     boolean x = theDir.mkdir();
-    System.out.println("directory status: " + x);
+    //System.out.println("directory status: " + x);
 
     writeCurrentToFile();
     writeBoughtFile();
     writeSoldFile();
+    writeDateCreatedFile();
   }
 
   private void writeCurrentToFile() {
@@ -115,6 +116,16 @@ public class SavePortfolioOperation {
     }
     try (FileWriter writer = new FileWriter(port + portfolio.getName() + "/sold.csv")) {
       writer.write(sold.toString());
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
+  private void writeDateCreatedFile() {
+    StringBuilder dateCreated = new StringBuilder();
+    dateCreated.append(portfolio.getDateCreated());
+    try (FileWriter writer = new FileWriter(port + portfolio.getName() + "/date-created.csv")) {
+      writer.write(dateCreated.toString());
     } catch (IOException e) {
       e.printStackTrace();
     }

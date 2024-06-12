@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
 /**
@@ -18,11 +19,10 @@ public interface ISmartPortfolio extends IPortfolio{
    * Removes a specified number of shares of a stock to the portfolio.
    *
    * @param ticker the ticker symbol of the stock
-   * @param stock  the stock to be added
    * @param shares the number of shares to be removed
    * @throws FileNotFoundException if the stock data file is not found
    */
-  void removeStockShare(String ticker, IStock stock, int shares, LocalDate date)
+  void removeStockShare(String ticker, double shares, LocalDate date)
           throws FileNotFoundException;
 
 
@@ -34,7 +34,7 @@ public interface ISmartPortfolio extends IPortfolio{
    * @param shares the number of shares to be added
    * @throws FileNotFoundException if the stock data file is not found
    */
-  void addStockShare(String ticker, IStock stock, int shares, LocalDate date)
+  void addStockShare(String ticker, IStock stock, double shares, LocalDate date)
           throws FileNotFoundException;
   /**
    * Retrieves the current state of the portfolio with information such as the stocks in that
@@ -79,4 +79,14 @@ public interface ISmartPortfolio extends IPortfolio{
    * @return the total of sold shares.
    */
   Map<String, ISmartStockShares> getCurrentStockSharesMap();
+
+  /**
+   * Gets the current day of when a portfolio was created.
+   * @return the date of the portfolio was created.
+   */
+  LocalDate getDateCreated();
+
+
+  void setDateCreated(LocalDate dateCreated);
+
 }

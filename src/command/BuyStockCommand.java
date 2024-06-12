@@ -1,8 +1,10 @@
 package command;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.Scanner;
 
+import command.readerbuilder.SavePortfolioOperation;
 import model.ISmartPortfolio;
 import model.IStockMarket;
 import view.IView;
@@ -26,6 +28,7 @@ public class BuyStockCommand extends ACommand{
 //      view.writeMessage("Please enter 'y' for yes, 'n' for no: ");
 //      input = s.next();
 //    }
+
     view.writeMessage("How many shares would you like to buy? " +
               System.lineSeparator());
     view.writeMessage( "(after entering the shares you will be prompted to enter the " +
@@ -34,17 +37,31 @@ public class BuyStockCommand extends ACommand{
     int shares = 0;
     while(!valid) {
       try {
-        shares = s.nextInt();
+        shares = Integer.parseInt(s.next());
         valid = true;
       } catch (Exception e) {
-        view.writeMessage("Please enter a positive whole number.");
+        view.writeMessage("Please enter a positive whole number." + System.lineSeparator());
       }
     }
-    view.writeMessage("What company would you like to buy " + shares + "of?" +
-            System.lineSeparator());
-    InputAPIStockCommand stock = new InputAPIStockCommand(view, s);
-    //stock.setToPortFolio(portfolio.getName(), shares);
-    //InputAPIStockCommand.run(stockMarket);
+//    view.writeMessage("What company would you like to buy " + shares + "of?" +
+//            System.lineSeparator());
 
+    view.writeMessage("Please enter the date you'd like to buy this stock on: (YYYY-MM-DD)"
+            + System.lineSeparator());
+    LocalDate start = null;
+    boolean gotDate = false;
+    while (!gotDate) {
+      try {
+        start = LocalDate.parse(s.next());
+        gotDate = true;
+      } catch (Exception e) {
+        view.writeMessage("Invalid input, enter a valid date" +
+                " (YYYY-MM-DD) ");
+      }
+    }
+    InputAPIStockCommand createStock = new InputAPIStockCommand(view, s);
+    createStock.setToPortFolio(portfolio.getName(), shares, start);
+    createStock.run(stockMarket);
+    new SavePortfolioOperation(portfolio).run();
   }
 }

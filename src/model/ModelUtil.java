@@ -63,9 +63,13 @@ public class ModelUtil {
       Map<String, ArrayList<ISmartStockShares>> boughtState = parseBoughtFile(bought, myStockMarket, true);
       thisPortfolio.setBoughtStockSharesMap(boughtState);
 
+
       Readable sold = new FileReader(portName + portDir.getName() + "/sold.csv");
       Map<String, ArrayList<ISmartStockShares>> soldState = parseBoughtFile(sold, myStockMarket, false);
       thisPortfolio.setSoldStockSharesMap(soldState);
+
+      Readable date = new FileReader(portName + portDir.getName() + "/date-created.csv");
+      thisPortfolio.setDateCreated(parseDate(date));
     }
   }
 
@@ -127,6 +131,15 @@ public class ModelUtil {
       }
     }
     return stocks;
+  }
+
+  private LocalDate parseDate(Readable s) {
+    Scanner scanner = new Scanner(s);
+      String dateAsString = scanner.next();
+      DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd",
+              Locale.ENGLISH);
+      LocalDate localdate = LocalDate.parse(dateAsString, formatter);
+    return localdate;
   }
 
 
