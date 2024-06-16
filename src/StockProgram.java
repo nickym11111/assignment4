@@ -1,9 +1,15 @@
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import controller.IController;
 import controller.StockController;
+import controller.StockControllerGUI;
+import model.ISmartStockMarket;
 import model.IStockMarket;
+import model.SmartStockMarket;
 import model.StockMarket;
+import view.IViewGUI;
+import view.ViewGUIImpl;
 
 /**
  * The main class for that executes the stock program.
@@ -16,6 +22,7 @@ public class StockProgram {
    * @param args command-line arguments
    * @throws IOException if an I/O error occurs
    */
+
   public static void main(String[] args) throws IOException {
     Readable rd = new InputStreamReader(System.in);
     Appendable ap = System.out;

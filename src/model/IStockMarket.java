@@ -62,4 +62,5 @@ public interface IStockMarket {
    * @return a map of ticker symbols to stock objects
    */
   Map<String, IStock> getStocks();
+
 }
