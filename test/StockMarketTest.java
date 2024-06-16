@@ -2,7 +2,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.FileNotFoundException;
-import java.util.HashMap;
+import java.util.Map;
 
 import model.IPortfolio;
 import model.ISmartPortfolio;
@@ -12,7 +12,6 @@ import model.StockMarket;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
@@ -56,7 +55,7 @@ public class StockMarketTest {
   public void testGetPortfolio() {
     stockMarket.addPortfolio("Finance");
     IPortfolio portfolio = stockMarket.getPortfolio("Finance");
-    assertNotNull(portfolio);
+
     assertEquals("Finance", portfolio.getName());
   }
 
@@ -70,7 +69,7 @@ public class StockMarketTest {
   public void testGetPortfolios() {
     stockMarket.addPortfolio("Tech");
     stockMarket.addPortfolio("Health");
-    HashMap<String, ISmartPortfolio> portfolios = stockMarket.getPortfolios();
+    Map<String, ISmartPortfolio> portfolios = stockMarket.getPortfolios();
 
     assertTrue(portfolios.containsKey("Tech"));
     assertTrue(portfolios.containsKey("Health"));
@@ -79,7 +78,7 @@ public class StockMarketTest {
   @Test
   public void testGetStocks() {
     stockMarket.addStock("GOOG", stock);
-    HashMap<String, IStock> stocks = stockMarket.getStocks();
+    Map<String, IStock> stocks = stockMarket.getStocks();
 
     assertTrue(stocks.containsKey("GOOG"));
   }
@@ -88,8 +87,10 @@ public class StockMarketTest {
   public void testAddDuplicateStock() {
     stockMarket.addStock("GOOG", stock);
     stockMarket.addStock("GOOG", copyOfGoogle);
-    HashMap<String, IStock> stocks = stockMarket.getStocks();
-    assertEquals(7, stocks.size());
+
+    Map<String, IStock> stocks = stockMarket.getStocks();
+
+    assertEquals(8, stocks.size());
     assertEquals(copyOfGoogle, stocks.get("GOOG"));
   }
 

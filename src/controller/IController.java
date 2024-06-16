@@ -13,5 +13,5 @@ public interface IController {
    *
    * @throws IOException if an I/O error occurs during controller execution
    */
-  void go() throws IOException;
+  void goController() throws IOException;
 }

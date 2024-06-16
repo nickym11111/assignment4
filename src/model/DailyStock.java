@@ -113,9 +113,11 @@ public class DailyStock {
    * true if and only if the argument is not null and is a DailyStock
    * object that has the same values as this object.
    *
-   * @param o the object to compare this DailyStock against
-   * @return true if the given object represents a DailyStock equivalent
-   *         to this DailyStock, false otherwise
+   * @param o
+   *     the object to compare this DailyStock against
+   * @return
+   *     true if the given object represents a DailyStock equivalent
+   *     to this DailyStock, false otherwise
    */
   @Override
   public boolean equals(Object o) {

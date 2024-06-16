@@ -1,16 +1,13 @@
 package command;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Scanner;
 
-import model.IPortfolio;
 import model.ISmartPortfolio;
 import model.ISmartStockShares;
 import model.IStock;
-import model.StockShares;
 import view.IView;
 
 /**
@@ -28,7 +25,8 @@ public class ValuePortfolio implements IPortfolioStrategies {
    *
    * @param out represents an IView field which holds program output
    */
-  public ValuePortfolio(IView out) {this.out = Objects.requireNonNull(out);
+  public ValuePortfolio(IView out) {
+    this.out = Objects.requireNonNull(out);
   }
 
   /**
@@ -44,8 +42,8 @@ public class ValuePortfolio implements IPortfolioStrategies {
   public void stratGo(Scanner s, ISmartPortfolio portfolio) {
     try {
       LocalDate date = LocalDate.parse(s.next());
-      out.writeMessage(getPortfolioValue(date, portfolio) + " is the value of this portfolio"
-      + System.lineSeparator());
+      out.writeMessage("$" + getPortfolioValue(date, portfolio) + " is the value of this portfolio"
+              + System.lineSeparator());
 
     } catch (Exception e) {
       out.writeMessage("Invalid input, enter a valid date (YYYY-MM-DD)" + System.lineSeparator());
@@ -64,14 +62,12 @@ public class ValuePortfolio implements IPortfolioStrategies {
 
   public double getPortfolioValue(LocalDate date, ISmartPortfolio portfolio) {
     DateUtil d = new DateUtil();
-    if(date.isBefore(portfolio.getDateCreated()))
-    {
+    if (date.isBefore(portfolio.getDateCreated())) {
       return 0.0;
     }
     if (d.isWeekend(date)) {
       date = d.getNearestAvailableDate(date);
     }
-    System.out.println(portfolio.getDateCreated());
     double totalValue = 0.0;
     for (Map.Entry<String, ISmartStockShares> entry :
             portfolio.getCurrentStockSharesMap().entrySet()) {
@@ -86,7 +82,10 @@ public class ValuePortfolio implements IPortfolioStrategies {
                 + " on date: " + date);
       }
     }
-    return totalValue;
+
+
+    long bigRound = Math.round(totalValue * 100);
+    return bigRound / 100.0;
   }
 
 

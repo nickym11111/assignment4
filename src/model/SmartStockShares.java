@@ -4,10 +4,10 @@ import java.io.FileNotFoundException;
 import java.time.LocalDate;
 
 /**
- *  This class keeps track of the date and current state of the share if
- *  has been bought or not. It includes methods that allow to get the date
- *  of when a stock share is bough, set the date of the share, and
- *  set the current state of share if has been bought or not.
+ * This class keeps track of the date and current state of the share if
+ * has been bought or not. It includes methods that allow to get the date
+ * of when a stock share is bough, set the date of the share, and
+ * set the current state of share if has been bought or not.
  */
 public class SmartStockShares extends StockShares implements ISmartStockShares {
   private LocalDate date;
@@ -26,9 +26,9 @@ public class SmartStockShares extends StockShares implements ISmartStockShares {
     this.date = date;
   }
 
-
   /**
    * Gets the current date of when the stock share was bought.
+   *
    * @return the current date.
    */
   public LocalDate getDate() {
@@ -37,6 +37,7 @@ public class SmartStockShares extends StockShares implements ISmartStockShares {
 
   /**
    * Sets the date of a share.
+   *
    * @param date The new date the date will be set too.
    */
   public void setDate(LocalDate date) {
@@ -45,6 +46,7 @@ public class SmartStockShares extends StockShares implements ISmartStockShares {
 
   /**
    * Determines if a share has been bought or not.
+   *
    * @return true if a stock has been bought else returns false.
    */
   public boolean isBought() {
@@ -52,8 +54,9 @@ public class SmartStockShares extends StockShares implements ISmartStockShares {
   }
 
   /**
-   * Sets the
-   * @param bought
+   * Sets the current state the share if has been bough or not.
+   *
+   * @param bought the current status of the share.
    */
   public void setBought(boolean bought) {
     this.bought = bought;

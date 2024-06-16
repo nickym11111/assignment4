@@ -46,24 +46,34 @@ public class CheckSpecificStockCommandTest extends ACommandTest {
     command = new CheckSpecificStockCommand(view, s);
     command.run(stockMarket);
     assertEquals("Enter tickerSymbol to view statistics about a stock\n" +
-            "Enter 'g' to get the gain or loss of this stock from a start date to end date\n" +
-            "Enter 'm' to get the x-day moving average of this stock at a starting date\n" +
-            "Enter 'c' to show which days are x-day crossovers for this stock at a start " +
-            "date and end date\n" +
+            "Enter 'g' to get the gain or loss of this stock from" +
+            " a start date to end date\n" +
+            "Enter 'm' to get the x-day moving average of this " +
+            "stock at a starting date\n" +
+            "Enter 'c' to show which days are x-day crossovers " +
+            "for this stock at a start date and end date\n" +
+            "Enter 'p' to get the performance of a " +
+            "stock from a start date to end date\n" +
             "Enter 'b' to go back to previous options\n" +
-            "Keep in mind that entering a date/crossover day range that has not happened" +
-            " yet will result\n" +
-            "in the most recently recorded date being used as the end date instead.\n" +
-            "Keep in mind entering a start date that has not happened yet will prevent the" +
-            " calculation.\n" +
-            "Enter a start date (YYYY-MM-DD) followed by a space and an end date (YYYY-MM-DD)\n" +
-            "Invalid input, enter a valid date (YYYY-MM-DD) followed by a space " +
-            "and another valid" +
-            " date (YYYY-MM_DD)  is gain or loss of this stock between the start and end date\n" +
-            "Enter 'g' to get the gain or loss of this stock from a start date to end date\n" +
-            "Enter 'm' to get the x-day moving average of this stock at a starting date\n" +
-            "Enter 'c' to show which days are x-day crossovers for this stock at a start" +
-            " date and end date\n" +
+            "Keep in mind that entering a date/crossover day range " +
+            "that has not happened yet will result\n" +
+            "in the most recently recorded date being used as the " +
+            "end date instead.\n" +
+            "Keep in mind entering a start date that has not happened " +
+            "yet will prevent the calculation.\n" +
+            "Enter a start date (YYYY-MM-DD) followed by a space and " +
+            "an end date (YYYY-MM-DD)\n" +
+            "Invalid input, enter a valid date (YYYY-MM-DD) followed" +
+            " by a space and another valid date (YYYY-MM_DD)  is gain or " +
+            "loss of this stock between the start and end date\n" +
+            "Enter 'g' to get the gain or loss of this stock from a " +
+            "start date to end date\n" +
+            "Enter 'm' to get the x-day moving average of this stock at " +
+            "a starting date\n" +
+            "Enter 'c' to show which days are x-day crossovers for this " +
+            "stock at a start date and end date\n" +
+            "Enter 'p' to get the performance of a stock from a start " +
+            "date to end date\n" +
             "Enter 'b' to go back to previous options\n", builder.toString());
   }
 
@@ -77,21 +87,25 @@ public class CheckSpecificStockCommandTest extends ACommandTest {
     assertEquals("Enter tickerSymbol to view statistics about a stock\n" +
             "Enter 'g' to get the gain or loss of this stock from a start date to end date\n" +
             "Enter 'm' to get the x-day moving average of this stock at a starting date\n" +
-            "Enter 'c' to show which days are x-day crossovers for this stock at a start date " +
-            "and end date\n" +
+            "Enter 'c' to show which days are x-day crossovers" +
+            " for this stock at a start date and end date\n" +
+            "Enter 'p' to get the performance of a stock from " +
+            "a start date to end date\n" +
             "Enter 'b' to go back to previous options\n" +
-            "Keep in mind that entering a date/crossover day range that has not" +
-            " happened yet will" +
-            " result\n" +
+            "Keep in mind that entering a date/crossover day range " +
+            "that has not happened yet will result\n" +
             "in the most recently recorded date being used as the end date instead.\n" +
-            "Keep in mind entering a start date that has not happened yet will prevent the" +
-            " calculation.\n" +
-            "Enter a start date (YYYY-MM-DD) followed by a space and an end date (YYYY-MM-DD)\n" +
-            "9.0  is gain or loss of this stock between the start and end date\n" +
+            "Keep in mind entering a start date that has not " +
+            "happened yet will prevent the calculation.\n" +
+            "Enter a start date (YYYY-MM-DD) followed by a " +
+            "space and an end date (YYYY-MM-DD)\n" +
+            "$9.0 is gain or loss of this stock between the start and end date\n" +
             "Enter 'g' to get the gain or loss of this stock from a start date to end date\n" +
             "Enter 'm' to get the x-day moving average of this stock at a starting date\n" +
-            "Enter 'c' to show which days are x-day crossovers for this stock at a start date " +
-            "and end date\n" +
+            "Enter 'c' to show which days are x-day crossovers " +
+            "for this stock at a start date and end date\n" +
+            "Enter 'p' to get the performance of a stock from" +
+            " a start date to end date\n" +
             "Enter 'b' to go back to previous options\n", builder.toString());
   }
 
@@ -105,22 +119,27 @@ public class CheckSpecificStockCommandTest extends ACommandTest {
     assertEquals("Enter tickerSymbol to view statistics about a stock\n" +
             "Enter 'g' to get the gain or loss of this stock from a start date to end date\n" +
             "Enter 'm' to get the x-day moving average of this stock at a starting date\n" +
-            "Enter 'c' to show which days are x-day crossovers for this stock at a start date " +
-            "and end date\n" +
+            "Enter 'c' to show which days are x-day " +
+            "crossovers for this stock at a start date and end date\n" +
+            "Enter 'p' to get the performance of a stock from a start date to end date\n" +
             "Enter 'b' to go back to previous options\n" +
-            "Keep in mind that entering an end date/moving day range that has not happened yet" +
-            " will result\n" +
+            "Keep in mind that entering an end date/moving " +
+            "day range that has not happened yet will result\n" +
             "in the most recently recorded date being used as the end date instead.\n" +
-            "Keep in mind entering a start date that has not happened yet will prevent the " +
-            "calculation.\n" +
-            "Enter a start date (YYYY-MM-DD) followed by a space and the positive integer number" +
-            " of days of moving average (x): \n" +
-            "Invalid input, enter a valid date (YYYY-MM-DD) followed by a space and a positive" +
-            " integer is the moving average\n" +
-            "Enter 'g' to get the gain or loss of this stock from a start date to end date\n" +
-            "Enter 'm' to get the x-day moving average of this stock at a starting date\n" +
-            "Enter 'c' to show which days are x-day crossovers for this stock at a start date" +
-            " and end date\n" +
+            "Keep in mind entering a start date that has not " +
+            "happened yet will prevent the calculation.\n" +
+            "Enter a start date (YYYY-MM-DD) followed by a " +
+            "space and the positive integer number of days of moving average (x): \n" +
+            "Invalid input, enter a valid date (YYYY-MM-DD) " +
+            "followed by a space and a positive integer is the moving average\n" +
+            "Enter 'g' to get the gain or loss of this stock " +
+            "from a start date to end date\n" +
+            "Enter 'm' to get the x-day moving average of " +
+            "this stock at a starting date\n" +
+            "Enter 'c' to show which days are x-day crossovers " +
+            "for this stock at a start date and end date\n" +
+            "Enter 'p' to get the performance of a stock from " +
+            "a start date to end date\n" +
             "Enter 'b' to go back to previous options\n", builder.toString());
   }
 
@@ -132,23 +151,30 @@ public class CheckSpecificStockCommandTest extends ACommandTest {
     command = new CheckSpecificStockCommand(view, s);
     command.run(stockMarket);
     assertEquals("Enter tickerSymbol to view statistics about a stock\n" +
-            "Enter 'g' to get the gain or loss of this stock from a start date to end date\n" +
-            "Enter 'm' to get the x-day moving average of this stock at a starting date\n" +
-            "Enter 'c' to show which days are x-day crossovers for this stock at a start date " +
-            "and end date\n" +
+            "Enter 'g' to get the gain or loss of this stock from a start " +
+            "date to end date\n" +
+            "Enter 'm' to get the x-day moving average of this stock at a " +
+            "starting date\n" +
+            "Enter 'c' to show which days are x-day crossovers " +
+            "for this stock at a start date and end date\n" +
+            "Enter 'p' to get the performance of a stock from a " +
+            "start date to end date\n" +
             "Enter 'b' to go back to previous options\n" +
-            "Keep in mind that entering an end date/moving day range that has not happened yet" +
-            " will result\n" +
+            "Keep in mind that entering an end date/moving day range " +
+            "that has not happened yet will result\n" +
             "in the most recently recorded date being used as the end date instead.\n" +
-            "Keep in mind entering a start date that has not happened yet will prevent the" +
-            " calculation.\n" +
-            "Enter a start date (YYYY-MM-DD) followed by a space and the positive integer " +
-            "number of days of moving average (x): \n" +
-            "177.65  is the moving average\n" +
-            "Enter 'g' to get the gain or loss of this stock from a start date to end date\n" +
+            "Keep in mind entering a start date that has not happened " +
+            "yet will prevent the calculation.\n" +
+            "Enter a start date (YYYY-MM-DD) followed by a space and " +
+            "the positive integer number of days of moving average (x): \n" +
+            "$177.65 is the moving average\n" +
+            "Enter 'g' to get the gain or loss of this stock from " +
+            "a start date to end date\n" +
             "Enter 'm' to get the x-day moving average of this stock at a starting date\n" +
-            "Enter 'c' to show which days are x-day crossovers for this stock at a start date" +
-            " and end date\n" +
+            "Enter 'c' to show which days are x-day crossovers for " +
+            "this stock at a start date and end date\n" +
+            "Enter 'p' to get the performance of a stock from a" +
+            " start date to end date\n" +
             "Enter 'b' to go back to previous options\n", builder.toString());
   }
 
@@ -160,31 +186,42 @@ public class CheckSpecificStockCommandTest extends ACommandTest {
     command = new CheckSpecificStockCommand(view, s);
     command.run(stockMarket);
     assertEquals("Enter tickerSymbol to view statistics about a stock\n" +
-            "Enter 'g' to get the gain or loss of this stock from a start date to end date\n" +
-            "Enter 'm' to get the x-day moving average of this stock at a starting date\n" +
-            "Enter 'c' to show which days are x-day crossovers for this stock at a start date " +
-            "and end date\n" +
-            "Enter 'b' to go back to previous options\n" +
-            "Keep in mind that entering a date/crossover day range that has not happened yet" +
-            " will result\n" +
-            "in the most recently recorded date being used as the end date instead.\n" +
-            "Keep in mind entering a start date that has not happened yet will prevent the " +
-            "calculation.\n" +
-            "Enter a start date (YYYY-MM-DD) followed by a space and an end date (YYYY-MM-DD) " +
-            "followed by a space and \n" +
-            "the positive integer number of days of moving average (x): \n" +
-            "Invalid input, enter a valid date (YYYY-MM-DD) followed by a space and a positive" +
-            " integerEnter 'g' to get the gain or loss of this stock from a start" +
+            "Enter 'g' to get the gain or loss of this stock from a start" +
             " date to end date\n" +
             "Enter 'm' to get the x-day moving average of this stock at a starting date\n" +
-            "Enter 'c' to show which days are x-day crossovers for this stock at a start " +
-            "date and end date\n" +
+            "Enter 'c' to show which days are x-day " +
+            "crossovers for this stock at a start date and end date\n" +
+            "Enter 'p' to get the performance of a stock from" +
+            " a start date to end date\n" +
+            "Enter 'b' to go back to previous options\n" +
+            "Keep in mind that entering a date/crossover day " +
+            "range that has not happened yet will result\n" +
+            "in the most recently recorded date being used as the " +
+            "end date instead.\n" +
+            "Keep in mind entering a start date that has not " +
+            "happened yet will prevent the calculation.\n" +
+            "Enter a start date (YYYY-MM-DD) followed by a space " +
+            "and an end date (YYYY-MM-DD) followed by a space and \n" +
+            "the positive integer number of days of moving average (x): \n" +
+            "Invalid input, enter a valid date (YYYY-MM-DD) followed " +
+            "by a space and a positive integerEnter 'g' to get the gain " +
+            "or loss of this stock from a start date to end date\n" +
+            "Enter 'm' to get the x-day moving average of this stock " +
+            "at a starting date\n" +
+            "Enter 'c' to show which days are x-day crossovers for " +
+            "this stock at a start date and end date\n" +
+            "Enter 'p' to get the performance of a stock from a start " +
+            "date to end date\n" +
             "Enter 'b' to go back to previous options\n" +
             "Undefined instruction: 202405\n" +
-            "Enter 'g' to get the gain or loss of this stock from a start date to end date\n" +
-            "Enter 'm' to get the x-day moving average of this stock at a starting date\n" +
-            "Enter 'c' to show which days are x-day crossovers for this stock at a start date" +
-            " and end date\n" +
+            "Enter 'g' to get the gain or loss of this " +
+            "stock from a start date to end date\n" +
+            "Enter 'm' to get the x-day moving average " +
+            "of this stock at a starting date\n" +
+            "Enter 'c' to show which days are x-day crossovers " +
+            "for this stock at a start date and end date\n" +
+            "Enter 'p' to get the performance of a stock from " +
+            "a start date to end date\n" +
             "Enter 'b' to go back to previous options\n", builder.toString());
   }
 
@@ -196,18 +233,22 @@ public class CheckSpecificStockCommandTest extends ACommandTest {
     command = new CheckSpecificStockCommand(view, s);
     command.run(stockMarket);
     assertEquals("Enter tickerSymbol to view statistics about a stock\n" +
-            "Enter 'g' to get the gain or loss of this stock from a start date to end date\n" +
-            "Enter 'm' to get the x-day moving average of this stock at a starting date\n" +
-            "Enter 'c' to show which days are x-day crossovers for this stock at a start date" +
-            " and end date\n" +
+            "Enter 'g' to get the gain or loss of this stock from a start" +
+            " date to end date\n" +
+            "Enter 'm' to get the x-day moving average of this stock at a " +
+            "starting date\n" +
+            "Enter 'c' to show which days are x-day crossovers for this stock " +
+            "at a start date and end date\n" +
+            "Enter 'p' to get the performance of a stock from a start date to " +
+            "end date\n" +
             "Enter 'b' to go back to previous options\n" +
-            "Keep in mind that entering a date/crossover day range that has not happened yet" +
-            " will result\n" +
+            "Keep in mind that entering a date/crossover day range that has not " +
+            "happened yet will result\n" +
             "in the most recently recorded date being used as the end date instead.\n" +
-            "Keep in mind entering a start date that has not happened yet will prevent the" +
-            " calculation.\n" +
-            "Enter a start date (YYYY-MM-DD) followed by a space and an end date (YYYY-MM-DD)" +
-            " followed by a space and \n" +
+            "Keep in mind entering a start date that has not happened yet will " +
+            "prevent the calculation.\n" +
+            "Enter a start date (YYYY-MM-DD) followed by a space and an " +
+            "end date (YYYY-MM-DD) followed by a space and \n" +
             "the positive integer number of days of moving average (x): \n" +
             "2024-05-01\n" +
             "2024-05-02\n" +
@@ -215,11 +256,14 @@ public class CheckSpecificStockCommandTest extends ACommandTest {
             "2024-05-06\n" +
             "2024-05-07\n" +
             "2024-05-08\n" +
-            " were crossoversEnter 'g' to get the gain or loss of this stock from a start date " +
-            "to end date\n" +
-            "Enter 'm' to get the x-day moving average of this stock at a starting date\n" +
-            "Enter 'c' to show which days are x-day crossovers for this stock at a start date " +
-            "and end date\n" +
+            " were crossoversEnter 'g' to get the gain or loss of this " +
+            "stock from a start date to end date\n" +
+            "Enter 'm' to get the x-day moving average of this stock at" +
+            " a starting date\n" +
+            "Enter 'c' to show which days are x-day crossovers for this " +
+            "stock at a start date and end date\n" +
+            "Enter 'p' to get the performance of a stock" +
+            " from a start date to end date\n" +
             "Enter 'b' to go back to previous options\n", builder.toString());
   }
 
@@ -231,16 +275,24 @@ public class CheckSpecificStockCommandTest extends ACommandTest {
     command = new CheckSpecificStockCommand(view, s);
     command.run(stockMarket);
     assertEquals("Enter tickerSymbol to view statistics about a stock\n" +
-            "Enter 'g' to get the gain or loss of this stock from a start date to end date\n" +
-            "Enter 'm' to get the x-day moving average of this stock at a starting date\n" +
-            "Enter 'c' to show which days are x-day crossovers for this stock at a start date" +
-            " and end date\n" +
+            "Enter 'g' to get the gain or loss of this stock from a start " +
+            "date to end date\n" +
+            "Enter 'm' to get the x-day moving average of this stock at a " +
+            "starting date\n" +
+            "Enter 'c' to show which days are x-day crossovers " +
+            "for this stock at a start date and end date\n" +
+            "Enter 'p' to get the performance of a stock from " +
+            "a start date to end date\n" +
             "Enter 'b' to go back to previous options\n" +
             "Undefined instruction: lala\n" +
-            "Enter 'g' to get the gain or loss of this stock from a start date to end date\n" +
-            "Enter 'm' to get the x-day moving average of this stock at a starting date\n" +
-            "Enter 'c' to show which days are x-day crossovers for this stock at a start date" +
-            " and end date\n" +
+            "Enter 'g' to get the gain or loss of this stock " +
+            "from a start date to end date\n" +
+            "Enter 'm' to get the x-day moving average of this stock at " +
+            "a starting date\n" +
+            "Enter 'c' to show which days are x-day crossovers " +
+            "for this stock at a start date and end date\n" +
+            "Enter 'p' to get the performance of a stock from a " +
+            "start date to end date\n" +
             "Enter 'b' to go back to previous options\n", builder.toString());
   }
 

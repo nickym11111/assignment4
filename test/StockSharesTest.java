@@ -29,7 +29,7 @@ public class StockSharesTest {
   @Test
   public void testGetShares() {
 
-    assertEquals(100, this.stockShares1.getShares());
+    assertEquals(100, this.stockShares1.getShares(), 0.01);
   }
 
 
@@ -56,24 +56,12 @@ public class StockSharesTest {
   public void testToString() {
 
 
-    String expected = "StockSharesshares= 100, stock= StocktickerSymbol='GOOG'," +
+    String expected = "StockSharesshares= 100.0, stock= StocktickerSymbol='GOOG'," +
             " mostRecentDate=null, earliestDate=null, allStocks={}";
 
     assertEquals(expected, stockShares2.toString());
   }
 
-
-//  @Test
-//  public void testBuyShares() {
-//
-//    assertEquals(4, this.por
-//  }
-
-//  @Test
-//  public void testSellShare() {
-//
-//    assertEquals("Technology", portfolio.getName());
-//  }
 
 
 }

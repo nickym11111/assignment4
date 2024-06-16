@@ -2,13 +2,14 @@ package model;
 
 import java.io.FileNotFoundException;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Represents a stock market that manages stocks and portfolios.
  */
 public class StockMarket implements IStockMarket {
-  private HashMap<String, IStock> stocks;
-  private HashMap<String, ISmartPortfolio> portfolios;
+  private Map<String, IStock> stocks;
+  private Map<String, ISmartPortfolio> portfolios;
 
   /**
    * Constructs a new StockMarket object.
@@ -77,8 +78,8 @@ public class StockMarket implements IStockMarket {
    *
    * @return a map of portfolio names to portfolios
    */
-  public HashMap<String, ISmartPortfolio> getPortfolios() {
-    return portfolios;
+  public Map<String, ISmartPortfolio> getPortfolios() {
+    return new HashMap<>(portfolios);
   }
 
   /**
@@ -86,7 +87,7 @@ public class StockMarket implements IStockMarket {
    *
    * @return a map of ticker symbols to stocks
    */
-  public HashMap<String, IStock> getStocks() {
-    return stocks;
+  public Map<String, IStock> getStocks() {
+    return new HashMap<>(stocks);
   }
 }

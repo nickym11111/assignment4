@@ -2,14 +2,13 @@ package command;
 
 import java.util.Scanner;
 
-import model.IPortfolio;
 import model.ISmartPortfolio;
 
 /**
  * An IPortfolioStrategies is a specific type of strategy that applies to a portfolio,
  * so it performs a specific functionality using the data of an IPortfolio.
  */
-public interface IPortfolioStrategies extends IStrategies {
+public interface IPortfolioStrategies {
   /**
    * stratGo method for an IPortfolioStrategies takes in a scanner which holds
    * user input and an IPortfolio object, and performs a specific functionality

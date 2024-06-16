@@ -2,6 +2,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.FileNotFoundException;
+import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,7 +27,7 @@ import static org.junit.Assert.assertEquals;
  * of stocks.
  */
 public class SmartPortfolioTest {
-  String filePath = "src/stocks/AMZN.csv";
+  String filePath = "stocks/AMZN.csv";
   IStockBuilder amazonBuilder = new StockBuilderImpl();
   IStockDataStream fileReaderAmazon = new FileStockDataStreamImpl(filePath);
   IStock amazonStock = amazonBuilder.buildStock("AMZN", fileReaderAmazon);
@@ -34,6 +35,9 @@ public class SmartPortfolioTest {
   LocalDate present = LocalDate.of(2024, 5, 1);
   ArrayList<ISmartStockShares> expectedFiveSharesOfAmazon = new ArrayList<>();
   ISmartStockShares fiveSharesOfAmazon;
+
+  LocalDate weekend = LocalDate.of(2024, 5, 4);
+  LocalDate holiday = LocalDate.of(2023, 5, 29);
 
   @Before
   public void setUp() throws Exception {
@@ -47,11 +51,52 @@ public class SmartPortfolioTest {
     ISmartStockShares expectedShare = new SmartStockShares(5, amazonStock,
             LocalDate.of(2024, 12, 5));
 
-    portfolio.addStockShare("AMZN", amazonStock, 5);
+    portfolio.addStockShare("AMZN", amazonStock, 5, present);
 
-    assertEquals(1, portfolio.getStockShareMap().size());
+    assertEquals(1, portfolio.getCurrentStockSharesMap().size());
 
-    assertEquals(5.0, portfolio.getStockShareMap().get("AMZN").getShares(), 0.01);
+    assertEquals(5.0, portfolio.getCurrentStockSharesMap()
+            .get("AMZN").getShares(), 0.01);
+  }
+
+  @Test
+  public void testAddStockShareWeekend() throws FileNotFoundException {
+    ISmartStockShares expectedShare = new SmartStockShares(5, amazonStock,
+            LocalDate.of(2024, 12, 5));
+
+    portfolio.addStockShare("AMZN", amazonStock, 5, weekend);
+
+    assertEquals(1, portfolio.getCurrentStockSharesMap().size());
+
+    assertEquals(5.0, portfolio.getCurrentStockSharesMap()
+            .get("AMZN").getShares(), 0.01);
+  }
+
+  @Test
+  public void testAddStockShareHoliday() throws FileNotFoundException {
+    ISmartStockShares expectedShare = new SmartStockShares(5, amazonStock,
+            LocalDate.of(2024, 12, 5));
+
+    portfolio.addStockShare("AMZN", amazonStock, 5, holiday);
+
+    assertEquals(1,
+            portfolio.getCurrentStockSharesMap().size());
+
+    assertEquals(5.0, portfolio
+            .getCurrentStockSharesMap().get("AMZN").getShares(), 0.01);
+  }
+
+  @Test(expected = DateTimeException.class)
+  public void testAddStockShareNegativeDate() throws FileNotFoundException {
+    LocalDate negativeDate = LocalDate.of(2024, 12, -5);
+    
+    portfolio.addStockShare("AMZN", amazonStock, 5, negativeDate);
+
+    assertEquals(1,
+            portfolio.getCurrentStockSharesMap().size());
+
+    assertEquals(5.0, portfolio
+            .getCurrentStockSharesMap().get("AMZN").getShares(), 0.01);
   }
 
 
@@ -60,16 +105,76 @@ public class SmartPortfolioTest {
     assertEquals(0, portfolio.getStockShareMap().size());
     portfolio.addStockShare("AMZN", amazonStock, 5, present);
 
-    assertEquals(5, portfolio.getCurrentStockSharesMap().get("AMZN").getShares(), 0.01);
+    assertEquals(5, portfolio.getCurrentStockSharesMap()
+            .get("AMZN").getShares(), 0.01);
 
     portfolio.removeStockShare("AMZN", 2, present);
 
-    assertEquals(3, portfolio.getCurrentStockSharesMap().get("AMZN").getShares(), 0.01);
+    assertEquals(3, portfolio.getCurrentStockSharesMap()
+            .get("AMZN").getShares(), 0.01);
+  }
+
+  @Test
+  public void testNoInOrder() throws FileNotFoundException {
+    LocalDate date = LocalDate.of(2005, 5, 1);
+
+    try {
+      portfolio.addStockShare("AMZN", amazonStock, 5, date);
+      portfolio.removeStockShare("AMZN", 5, date.minusDays(1));
+    } catch (IllegalArgumentException e) {
+      assertEquals("You cannot sell a stock from before " +
+              "the most recent transaction 2005-04-30", e.getMessage());
+    }
+
+
+
   }
 
 
   @Test
-  public void testPortfolioStateAtDate() {
+  public void testPortfolioStateAtDate() throws FileNotFoundException {
+    LocalDate date = LocalDate.of(2005, 5, 1);
+
+
+    portfolio.addStockShare("AMZN", amazonStock, 5, date);
+
+    ISmartStockShares expected3 = new SmartStockShares(5, amazonStock, date);
+    Map<String, ISmartStockShares> list = new HashMap<>();
+    list.put("AMZN", expected3);
+
+
+    assertEquals(list, portfolio.portfolioStateAtDate(date));
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testPortfolioStateSellStockMoreThanOwned() throws FileNotFoundException {
+    LocalDate date = LocalDate.of(2005, 5, 1);
+
+    portfolio.addStockShare("AMZN", amazonStock, 5, date);
+    portfolio.removeStockShare("AMZN", 8, date);
+
+    ISmartStockShares expected3 = new SmartStockShares(5, amazonStock, date);
+    Map<String, ISmartStockShares> list = new HashMap<>();
+    list.put("AMZN", expected3);
+
+
+    assertEquals(list, portfolio.portfolioStateAtDate(date));
+
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testPortfolioStateSellingAStockNeverOwned() throws FileNotFoundException {
+    LocalDate date = LocalDate.of(2005, 5, 1);
+
+    portfolio.addStockShare("AMZN", amazonStock, 5, date);
+    portfolio.removeStockShare("GOOG", 8, date);
+
+    ISmartStockShares expected3 = new SmartStockShares(5, amazonStock, date);
+    Map<String, ISmartStockShares> list = new HashMap<>();
+    list.put("AMZN", expected3);
+
+
+    assertEquals(list, portfolio.portfolioStateAtDate(date));
 
   }
 
@@ -158,5 +263,12 @@ public class SmartPortfolioTest {
             .getShares(), 0.01);
   }
 
+  @Test(expected = DateTimeException.class)
+  public void testNegativeInput() throws FileNotFoundException {
+    LocalDate invalidDate = LocalDate.of(2005, -5, 1);
+
+    portfolio.addStockShare("AMZN", amazonStock, 5, invalidDate);
+
+  }
 
 }

@@ -1,6 +1,6 @@
 package model;
 
-import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Interface representing a stock market with methods to manage
@@ -54,12 +54,12 @@ public interface IStockMarket {
    *
    * @return a map of portfolio names to portfolio objects
    */
-  HashMap<String, ISmartPortfolio> getPortfolios();
+  Map<String, ISmartPortfolio> getPortfolios();
 
   /**
    * Retrieves all stocks in the stock market.
    *
    * @return a map of ticker symbols to stock objects
    */
-  HashMap<String, IStock> getStocks();
+  Map<String, IStock> getStocks();
 }

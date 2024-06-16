@@ -1,6 +1,7 @@
 package model;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A mock implementation of the StockMarket interface for testing purposes.
@@ -86,7 +87,7 @@ public class StockMarketMock implements IStockMarket {
    * @return an empty HashMap
    */
   @Override
-  public HashMap<String, ISmartPortfolio> getPortfolios() {
+  public Map<String, ISmartPortfolio> getPortfolios() {
     this.log.append("getPortfolios (").append("Got portfolios) ");
     return new HashMap<>();
   }
@@ -98,7 +99,7 @@ public class StockMarketMock implements IStockMarket {
    * @return an empty HashMap
    */
   @Override
-  public HashMap<String, IStock> getStocks() {
+  public Map<String, IStock> getStocks() {
     this.log.append("getStocks (").append("Got stocks) ");
     return new HashMap<>();
   }

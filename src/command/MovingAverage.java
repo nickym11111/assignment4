@@ -45,7 +45,7 @@ public class MovingAverage implements IStockStrategies {
         out.writeMessage("Please enter a positive number" + System.lineSeparator());
         x = s.nextInt();
       }
-      out.writeMessage(movingAverage(date, x, stock) + " ");
+      out.writeMessage("$" + movingAverage(date, x, stock));
     } catch (Exception e) {
       out.writeMessage("Invalid input, enter a valid date (YYYY-MM-DD) " +
               "followed by a space and a positive integer");

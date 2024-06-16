@@ -17,19 +17,23 @@ import command.readerbuilder.IStockDataStream;
 import command.readerbuilder.StockBuilderImpl;
 
 /**
- * Utility class for initializing data in the stock market system.
+ * Utility class for managing and initializing stock market data from files
+ * stored in "stocks" and "portfolios" directories. It supports stock and
+ * portfolio integration by parsing CSV files to populate data structures
+ * facilitating efficient data management within the system.
  */
 public class ModelUtil {
+
+  String stockName = "stocks/";
+  String portName = "portfolios/";
 
   /**
    * Constructs a new ModelUtil object.
    */
   public ModelUtil() {
-    // this is empty because it uitls clas.
-  }
-  String stockName = "stocks/";
-  String portName = "portfolios/";
 
+    // this is empty because it utils clas.
+  }
 
   /**
    * Initializes data in the stock market by reading files from the
@@ -38,7 +42,8 @@ public class ModelUtil {
    * @param myStockMarket the stock market instance to initialize data for
    * @throws FileNotFoundException if a file is not found
    */
-  public void initializeData(IStockMarket myStockMarket) throws FileNotFoundException {
+  public void initializeData(IStockMarket myStockMarket)
+          throws FileNotFoundException {
     File directory = new File(stockName);
     File[] files = directory.listFiles();
     for (File file : files) {
@@ -60,20 +65,26 @@ public class ModelUtil {
       thisPortfolio.setCurrentStockSharesMap(currentState);
 
       Readable bought = new FileReader(portName + portDir.getName() + "/bought.csv");
-      Map<String, ArrayList<ISmartStockShares>> boughtState = parseBoughtFile(bought, myStockMarket, true);
+      Map<String, ArrayList<ISmartStockShares>> boughtState =
+              parseBoughtFile(bought, myStockMarket, true);
       thisPortfolio.setBoughtStockSharesMap(boughtState);
 
 
       Readable sold = new FileReader(portName + portDir.getName() + "/sold.csv");
-      Map<String, ArrayList<ISmartStockShares>> soldState = parseBoughtFile(sold, myStockMarket, false);
+      Map<String, ArrayList<ISmartStockShares>> soldState =
+              parseBoughtFile(sold, myStockMarket, false);
       thisPortfolio.setSoldStockSharesMap(soldState);
 
-      Readable date = new FileReader(portName + portDir.getName() + "/date-created.csv");
+      Readable date = new FileReader(portName
+              + portDir.getName() + "/date-created.csv");
       thisPortfolio.setDateCreated(parseDate(date));
     }
   }
 
-  private Map<String, ISmartStockShares> parseCurrentFile(Readable s, IStockMarket myStockMarket)
+  // This private method takes in reader to read the file and parse through it
+  // to then return the data within the current stocks in the portfolio.
+  private Map<String, ISmartStockShares> parseCurrentFile(Readable s,
+                                                          IStockMarket myStockMarket)
           throws FileNotFoundException {
     Map<String, ISmartStockShares> stocks = new HashMap<>();
 
@@ -99,9 +110,11 @@ public class ModelUtil {
     return stocks;
   }
 
+  // This private method takes in reader to read the file and parse through it
+  // to then return the data within the bought stocks in the portfolio.
   private Map<String, ArrayList<ISmartStockShares>> parseBoughtFile(Readable s,
-                                                              IStockMarket myStockMarket,
-                                                              boolean bought)
+                                                                    IStockMarket myStockMarket,
+                                                                    boolean bought)
           throws FileNotFoundException {
     Map<String, ArrayList<ISmartStockShares>> stocks = new HashMap<>();
 
@@ -133,13 +146,22 @@ public class ModelUtil {
     return stocks;
   }
 
+  //This private method gets the dates within the file and stores to then be
+  // able to save it on the file.
   private LocalDate parseDate(Readable s) {
     Scanner scanner = new Scanner(s);
-      String dateAsString = scanner.next();
-      DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd",
-              Locale.ENGLISH);
-      LocalDate localdate = LocalDate.parse(dateAsString, formatter);
-    return localdate;
+    String dateAsString = scanner.next();
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd",
+            Locale.ENGLISH);
+    LocalDate localDate;
+
+    if (dateAsString.equals(LocalDate.MIN.toString())) {
+      localDate = LocalDate.MIN;
+    } else {
+      localDate = LocalDate.parse(dateAsString, formatter);
+    }
+
+    return localDate;
   }
 
 

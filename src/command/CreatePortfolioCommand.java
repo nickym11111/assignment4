@@ -71,8 +71,8 @@ public class CreatePortfolioCommand extends ACommand {
           }
           // add catch exception here
           view.writeMessage("Please enter the date you'd like to buy this stock on: (YYYY-MM-DD)"
-          + System.lineSeparator());
-          LocalDate start = null;
+                  + System.lineSeparator());
+          LocalDate start = LocalDate.MIN;
           boolean gotDate = false;
           while (!gotDate) {
             try {

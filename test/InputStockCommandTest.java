@@ -32,9 +32,9 @@ public class InputStockCommandTest extends ACommandTest {
   public void testOriginalOutputBack() throws IOException {
     command.run(stockMarket);
     assertEquals("How would you like to input your stock data? \n" +
-            "Enter 'f' to input the stock data through a csv file.\n" +
-            "Enter 'a' to input the stock data through our online resource (API).\n" +
-            "Enter 'b' to go back to previous options or view stock data.\n",
+                    "Enter 'f' to input the stock data through a csv file.\n" +
+                    "Enter 'a' to input the stock data through our online resource (API).\n" +
+                    "Enter 'b' to go back to previous options or view stock data.\n",
             builder.toString());
 
   }
@@ -46,18 +46,18 @@ public class InputStockCommandTest extends ACommandTest {
     command = new InputStockCommand(view, s);
     command.run(stockMarket);
     assertEquals("How would you like to input your stock data? \n" +
-            "Enter 'f' to input the stock data through a csv file.\n" +
-            "Enter 'a' to input the stock data through our online resource (API).\n" +
-            "Enter 'b' to go back to previous options or view stock data.\n" +
-            "Please enter your csv file, with the format: \n" +
-            "date (YYYY-MM-DD) (most recent date starting), open price, high price," +
-            " low price, close price, volume\n" +
-            "Please enter the ticker symbol of the stock\n" +
-            "Successfully entered stock data\n" +
-            "How would you like to input your stock data? \n" +
-            "Enter 'f' to input the stock data through a csv file.\n" +
-            "Enter 'a' to input the stock data through our online resource (API).\n" +
-            "Enter 'b' to go back to previous options or view stock data.\n",
+                    "Enter 'f' to input the stock data through a csv file.\n" +
+                    "Enter 'a' to input the stock data through our online resource (API).\n" +
+                    "Enter 'b' to go back to previous options or view stock data.\n" +
+                    "Please enter your csv file, with the format: \n" +
+                    "date (YYYY-MM-DD) (most recent date starting), open price, high price," +
+                    " low price, close price, volume\n" +
+                    "Please enter the ticker symbol of the stock\n" +
+                    "Successfully entered stock data\n" +
+                    "How would you like to input your stock data? \n" +
+                    "Enter 'f' to input the stock data through a csv file.\n" +
+                    "Enter 'a' to input the stock data through our online resource (API).\n" +
+                    "Enter 'b' to go back to previous options or view stock data.\n",
             builder.toString());
 
   }
@@ -69,14 +69,14 @@ public class InputStockCommandTest extends ACommandTest {
     command = new InputStockCommand(view, s);
     command.run(stockMarket);
     assertEquals("How would you like to input your stock data? \n" +
-            "Enter 'f' to input the stock data through a csv file.\n" +
-            "Enter 'a' to input the stock data through our online resource (API).\n" +
-            "Enter 'b' to go back to previous options or view stock data.\n" +
-            "Undefined instruction: k\n" +
-            "How would you like to input your stock data? \n" +
-            "Enter 'f' to input the stock data through a csv file.\n" +
-            "Enter 'a' to input the stock data through our online resource (API).\n" +
-            "Enter 'b' to go back to previous options or view stock data.\n",
+                    "Enter 'f' to input the stock data through a csv file.\n" +
+                    "Enter 'a' to input the stock data through our online resource (API).\n" +
+                    "Enter 'b' to go back to previous options or view stock data.\n" +
+                    "Undefined instruction: k\n" +
+                    "How would you like to input your stock data? \n" +
+                    "Enter 'f' to input the stock data through a csv file.\n" +
+                    "Enter 'a' to input the stock data through our online resource (API).\n" +
+                    "Enter 'b' to go back to previous options or view stock data.\n",
             builder.toString());
 
   }

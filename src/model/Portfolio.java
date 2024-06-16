@@ -55,40 +55,6 @@ public class Portfolio implements IPortfolio {
   }
 
 
-
-//  private void updateCurrentStock() throws FileNotFoundException {
-//    HashMap<String, StockShares> newCurrentStockShare = new HashMap<>();
-//
-//    for (Map.Entry<String, ArrayList<StockShares>> entry : bought.entrySet()) {
-//      String ticker = entry.getKey();
-//      ArrayList<StockShares> bought = entry.getValue();
-//      int totalShares = 0;
-//
-//      for (StockShares s : bought) {
-//        totalShares += s.getShares();
-//      }
-//
-//      if (sold.containsKey(ticker)) {
-//        ArrayList<StockShares> soldShare = sold.get(ticker);
-//        for (StockShares s : soldShare) {
-//          totalShares -= s.getShares();
-//        }
-//      }
-//
-//      if (totalShares > 0) {
-//        IStock stock = bought.get(0).getStock();
-//        StockShares update = new StockShares(totalShares, stock);
-//        newCurrentStockShare.put(ticker, update);
-//      }
-//      this.currentStocksShareMap = newCurrentStockShare;
-//    }
-//
-//  }
-
-
-
-
-
 }
 
 

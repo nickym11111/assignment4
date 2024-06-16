@@ -79,7 +79,8 @@ public class InputAPIStockCommand extends ACommand {
       IStockBuilder stockBuilder = new StockBuilderImpl();
       IStock stock = stockBuilder.buildStock(userInstruction, data);
       if (inPortfolio) {
-        myStockMarket.getPortfolio(portfolioName).addStockShare(userInstruction, stock, shares, date);
+        myStockMarket.getPortfolio(portfolioName).addStockShare(userInstruction, stock,
+                shares, date);
       } else {
         myStockMarket.addStock(userInstruction, stock);
       }

@@ -60,6 +60,10 @@ public class CheckSpecificPortfolioCommand extends ACommand {
           printEvalutePortfolioInstructions();
           new ValuePortfolio(view).stratGo(s, portfolio);
           break;
+        case "rb":
+          printRebalanceInstructions();
+          new RebalancePortfolio(view).stratGo(s, portfolio);
+          break;
         case "c":
           new PortfolioCompositionCommand(view, s, portfolio).run(myStockMarket);
           break;
@@ -72,6 +76,10 @@ public class CheckSpecificPortfolioCommand extends ACommand {
         case "sell":
           new SellStockCommand(view, s, portfolio).run(myStockMarket);
           break;
+        case "p":
+          new GetPortfolioPerformance(view).stratGo(s, portfolio);
+          break;
+
         default:
           view.writeMessage("Undefined instruction: " + userInstruction +
                   System.lineSeparator());
@@ -96,9 +104,24 @@ public class CheckSpecificPortfolioCommand extends ACommand {
             + System.lineSeparator());
   }
 
+
+  private void printRebalanceInstructions() throws IllegalStateException {
+    view.writeMessage("Keep in mind that entering a date that has not happened yet will result"
+            + System.lineSeparator());
+    view.writeMessage("in the most recently recorded date being used instead."
+            + System.lineSeparator());
+
+    view.writeMessage("Enter a date (YYYY-MM-DD) for which you want to balance the portfolio value."
+            + System.lineSeparator());
+
+  }
+
   // prints the message for how to get the value of a portfolio or go back.
   private void printPortfolioCalculations() {
     view.writeMessage("Enter 'v' to get the value of this portfolio " +
+            "on a specific date"
+            + System.lineSeparator());
+    view.writeMessage("Enter 'rb' to balance this portfolio " +
             "on a specific date"
             + System.lineSeparator());
     view.writeMessage("Enter 'c' to get the composition of this portfolio " +
@@ -107,11 +130,14 @@ public class CheckSpecificPortfolioCommand extends ACommand {
     view.writeMessage("Enter 'd' to get the distribution of this portfolio " +
             "on a specific date"
             + System.lineSeparator());
-    view.writeMessage("Enter 'b' to go back to previous options"
-            + System.lineSeparator());
     view.writeMessage("Enter 'buy' to buy a stock for the portfolio"
             + System.lineSeparator());
     view.writeMessage("Enter 'sell' to sell stocks from the portfolio"
+            + System.lineSeparator());
+    view.writeMessage("Enter 'p' to get the performance of this " +
+            "portfolio on a given start and end date"
+            + System.lineSeparator());
+    view.writeMessage("Enter 'b' to go back to previous options"
             + System.lineSeparator());
 
   }

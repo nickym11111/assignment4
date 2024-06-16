@@ -31,11 +31,12 @@ public class ViewStockCommandTest extends ACommandTest {
   @Test
   public void testRunToViewPortFolios() throws IOException {
     command.run(stockMarket);
-    assertEquals("There are 7 stocks, with the following names: \n" +
+    assertEquals("There are 8 stocks, with the following names: \n" +
             "NFLX\n" +
             "META\n" +
             "GOOG\n" +
             "AAPL\n" +
+            "CMCSA\n" +
             "NKE\n" +
             "AMZN\n" +
             "MFST\n" +
@@ -51,11 +52,12 @@ public class ViewStockCommandTest extends ACommandTest {
     s = new Scanner(in);
     command = new ViewStockCommand(view, s);
     command.run(stockMarket);
-    assertEquals("There are 7 stocks, with the following names: \n" +
+    assertEquals("There are 8 stocks, with the following names: \n" +
             "NFLX\n" +
             "META\n" +
             "GOOG\n" +
             "AAPL\n" +
+            "CMCSA\n" +
             "NKE\n" +
             "AMZN\n" +
             "MFST\n" +
@@ -74,11 +76,12 @@ public class ViewStockCommandTest extends ACommandTest {
     s = new Scanner(in);
     command = new ViewStockCommand(view, s);
     command.run(stockMarket);
-    assertEquals("There are 7 stocks, with the following names: \n" +
+    assertEquals("There are 8 stocks, with the following names: \n" +
             "NFLX\n" +
             "META\n" +
             "GOOG\n" +
             "AAPL\n" +
+            "CMCSA\n" +
             "NKE\n" +
             "AMZN\n" +
             "MFST\n" +
@@ -92,4 +95,6 @@ public class ViewStockCommandTest extends ACommandTest {
             "Enter a 's' to view statistics about a specific stock\n" +
             "Enter 'b' to go back to previous options\n", builder.toString());
   }
+
+
 }

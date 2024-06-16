@@ -103,7 +103,7 @@ public class StockTest {
 
   @Test
   public void testGetMostRecentDate() {
-    LocalDate expectedDate = LocalDate.of(2024, 6, 7);
+    LocalDate expectedDate = LocalDate.of(2024, 6, 10);
 
     assertEquals(expectedDate, this.amazonStock.getMostRecentDate());
 

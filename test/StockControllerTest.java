@@ -22,7 +22,7 @@ public class StockControllerTest {
     Appendable ap = new StringBuilder();
     IStockMarket stockMarket = new StockMarket();
     IController controller = new StockController(ap, rd, stockMarket);
-    controller.go();
+    controller.goController();
 
     assertEquals("Your current options are: \n" +
             "view current stocks you've previously inputted (INPUT: 'vs')\n" +
@@ -41,7 +41,7 @@ public class StockControllerTest {
     Appendable ap = new StringBuilder();
     IStockMarket stockMarket = new StockMarket();
     IController controller = new StockController(ap, rd, stockMarket);
-    controller.go();
+    controller.goController();
 
     assertEquals("Your current options are: \n" +
             "view current stocks you've previously inputted (INPUT: 'vs')\n" +
@@ -60,7 +60,7 @@ public class StockControllerTest {
     Appendable ap = new StringBuilder();
     IStockMarket stockMarket = new StockMarket();
     IController controller = new StockController(ap, rd, stockMarket);
-    controller.go();
+    controller.goController();
 
     assertEquals("Your current options are: \n" +
             "view current stocks you've previously inputted (INPUT: 'vs')\n" +
@@ -68,9 +68,10 @@ public class StockControllerTest {
             "input a new stock (INPUT: 'stock')\n" +
             "input a new portfolio (INPUT: 'portfolio')\n" +
             "q or quit (quit the program) \n" +
-            "There are 1 portfolios, with the following names: \n" +
+            "There are 2 portfolios, with the following names: \n" +
+            "arsema\n" +
             "nicky\n" +
-            "Enter a 'p' to check value of a portfolio\n" +
+            "Enter a 'p' to sell, buy, or view portfolio information about a specific portfolio\n" +
             "Enter 'b' to go back to previous options\n" +
             "Your current options are: \n" +
             "view current stocks you've previously inputted (INPUT: 'vs')\n" +
@@ -89,7 +90,7 @@ public class StockControllerTest {
     Appendable ap = new StringBuilder();
     IStockMarket stockMarket = new StockMarket();
     IController controller = new StockController(ap, rd, stockMarket);
-    controller.go();
+    controller.goController();
 
     assertEquals("Your current options are: \n" +
             "view current stocks you've previously inputted (INPUT: 'vs')\n" +
@@ -97,11 +98,12 @@ public class StockControllerTest {
             "input a new stock (INPUT: 'stock')\n" +
             "input a new portfolio (INPUT: 'portfolio')\n" +
             "q or quit (quit the program) \n" +
-            "There are 7 stocks, with the following names: \n" +
+            "There are 8 stocks, with the following names: \n" +
             "NFLX\n" +
             "META\n" +
             "GOOG\n" +
             "AAPL\n" +
+            "CMCSA\n" +
             "NKE\n" +
             "AMZN\n" +
             "MFST\n" +
@@ -125,7 +127,7 @@ public class StockControllerTest {
     Appendable ap = new StringBuilder();
     IStockMarket stockMarket = new StockMarket();
     IController controller = new StockController(ap, rd, stockMarket);
-    controller.go();
+    controller.goController();
 
     assertEquals("Your current options are: \n" +
             "view current stocks you've previously inputted (INPUT: 'vs')\n" +
@@ -150,7 +152,7 @@ public class StockControllerTest {
     Appendable ap = new StringBuilder();
     IStockMarket stockMarket = new StockMarket();
     IController controller = new StockController(ap, rd, stockMarket);
-    controller.go();
+    controller.goController();
 
     assertEquals("Your current options are: \n" +
             "view current stocks you've previously inputted (INPUT: 'vs')\n" +

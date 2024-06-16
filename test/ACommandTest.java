@@ -3,7 +3,9 @@ import java.io.StringReader;
 import java.util.Scanner;
 
 import command.ICommand;
+import model.ISmartPortfolio;
 import model.IStockMarket;
+import model.SmartPortfolio;
 import model.StockMarket;
 import view.IView;
 import view.ViewImpl;
@@ -18,10 +20,10 @@ public class ACommandTest {
   Scanner s;
   ICommand command;
   IStockMarket stockMarket = new StockMarket();
+  ISmartPortfolio portfolio = new SmartPortfolio("Tech");
 
   public ACommandTest() throws FileNotFoundException {
     // constructor created to support exception thrown
-
   }
 
 }

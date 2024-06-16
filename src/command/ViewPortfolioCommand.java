@@ -1,11 +1,9 @@
 package command;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
-import model.IPortfolio;
 import model.ISmartPortfolio;
 import model.IStockMarket;
 import view.IView;
@@ -41,7 +39,7 @@ public class ViewPortfolioCommand extends ACommand {
    *                      obtain data from.
    */
   public void run(IStockMarket myStockMarket) throws IOException {
-    HashMap<String, ISmartPortfolio> portfolios = myStockMarket.getPortfolios();
+    Map<String, ISmartPortfolio> portfolios = myStockMarket.getPortfolios();
     if (portfolios.isEmpty()) {
       view.writeMessage("There are no portfolios" + System.lineSeparator());
     } else {
@@ -53,8 +51,9 @@ public class ViewPortfolioCommand extends ACommand {
     }
     boolean back = false;
     while (!back) {
-      view.writeMessage("Enter a 'p' to sell, buy, or view portfolio information about a specific " +
-              "portfolio"  + System.lineSeparator());
+      view.writeMessage("Enter a 'p' to sell, buy, or view portfolio information " +
+              "about a specific " +
+              "portfolio" + System.lineSeparator());
       view.writeMessage("Enter 'b' to go back to previous options"
               + System.lineSeparator());
 

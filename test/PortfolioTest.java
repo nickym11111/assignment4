@@ -19,17 +19,11 @@ import static org.junit.Assert.assertEquals;
  * property works and can be obtained.
  */
 public class PortfolioTest {
-   String filePath = "src/stocks/AMZN.csv";
-   IStockBuilder amazonBuilder = new StockBuilderImpl();
-   IStockDataStream fileReaderAmazon = new FileStockDataStreamImpl(filePath);
-   IStock amazonStock = amazonBuilder.buildStock("AMZN", fileReaderAmazon);
-   IPortfolio portfolio =  new Portfolio("Technology");
-
-
-
-
-
-
+  String filePath = "stocks/AMZN.csv";
+  IStockBuilder amazonBuilder = new StockBuilderImpl();
+  IStockDataStream fileReaderAmazon = new FileStockDataStreamImpl(filePath);
+  IStock amazonStock = amazonBuilder.buildStock("AMZN", fileReaderAmazon);
+  IPortfolio portfolio = new Portfolio("Technology");
 
 
   @Test
@@ -58,10 +52,6 @@ public class PortfolioTest {
 
     assertEquals("Technology", portfolio.getName());
   }
-
-
-
-
 
 
 }

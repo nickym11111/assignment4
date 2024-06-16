@@ -66,7 +66,7 @@ public class StockController implements IController {
    * @throws IOException if an I/O error occurs while reading input.
    */
   @Override
-  public void go() throws IOException {
+  public void goController() throws IOException {
     Scanner s = new Scanner(in);
     boolean quit = false;
     while (!quit) {

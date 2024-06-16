@@ -15,6 +15,7 @@ import model.ISmartStockShares;
  */
 public class SavePortfolioOperation {
   private final ISmartPortfolio portfolio;
+  String port = "portfolios/";
 
   /**
    * SavePortfolioOperation creates a SavePortfolioOperation object with the
@@ -25,7 +26,7 @@ public class SavePortfolioOperation {
   public SavePortfolioOperation(ISmartPortfolio portfolio) {
     this.portfolio = portfolio;
   }
-  String port = "portfolios/";
+
   /**
    * The run method for SavePortfolioOperation saves this portfolio as a csv file
    * with the portfolio name and inside the file holds the names of the stocks with their
@@ -50,7 +51,8 @@ public class SavePortfolioOperation {
     s.append(",");
     s.append("most-recent-transaction-date");
     s.append("\n");
-    for (Map.Entry<String, ISmartStockShares> entry : portfolio.getCurrentStockSharesMap().entrySet()) {
+    for (Map.Entry<String, ISmartStockShares> entry :
+            portfolio.getCurrentStockSharesMap().entrySet()) {
       s.append(entry.getKey());
       s.append(",");
       s.append(entry.getValue().getShares());
@@ -74,10 +76,11 @@ public class SavePortfolioOperation {
     bought.append("date-bought-on");
     bought.append("\n");
 
-    for (Map.Entry<String, ArrayList<ISmartStockShares>> entry : portfolio.getBoughtStockSharesMap().entrySet()) {
+    for (Map.Entry<String, ArrayList<ISmartStockShares>> entry :
+            portfolio.getBoughtStockSharesMap().entrySet()) {
       String ticker = entry.getKey();
       ArrayList<ISmartStockShares> shares = entry.getValue();
-      for(int i = 0; i < shares.size(); i++){
+      for (int i = 0; i < shares.size(); i++) {
         bought.append(ticker);
         bought.append(",");
         bought.append(shares.get(i).getShares());
@@ -102,10 +105,11 @@ public class SavePortfolioOperation {
     sold.append("date-sold-on");
     sold.append("\n");
 
-    for (Map.Entry<String, ArrayList<ISmartStockShares>> entry : portfolio.getSoldStockSharesMap().entrySet()) {
+    for (Map.Entry<String, ArrayList<ISmartStockShares>> entry :
+            portfolio.getSoldStockSharesMap().entrySet()) {
       String ticker = entry.getKey();
       ArrayList<ISmartStockShares> shares = entry.getValue();
-      for(int i = 0; i < shares.size(); i++){
+      for (int i = 0; i < shares.size(); i++) {
         sold.append(ticker);
         sold.append(",");
         sold.append(shares.get(i).getShares());
@@ -124,7 +128,8 @@ public class SavePortfolioOperation {
   private void writeDateCreatedFile() {
     StringBuilder dateCreated = new StringBuilder();
     dateCreated.append(portfolio.getDateCreated());
-    try (FileWriter writer = new FileWriter(port + portfolio.getName() + "/date-created.csv")) {
+    try (FileWriter writer = new FileWriter(port + portfolio.getName()
+            + "/date-created.csv")) {
       writer.write(dateCreated.toString());
     } catch (IOException e) {
       e.printStackTrace();

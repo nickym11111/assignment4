@@ -21,7 +21,8 @@ public class SmartPortfolio extends Portfolio implements ISmartPortfolio {
 
   /**
    * Construct a smart portfolio and initializes the bought, solid, current
-   * shares/
+   * shares as well as the date created.
+   *
    * @param name The name of the smart portfolio created.
    */
   public SmartPortfolio(String name) {
@@ -29,15 +30,17 @@ public class SmartPortfolio extends Portfolio implements ISmartPortfolio {
     bought = new HashMap<>();
     sold = new HashMap<>();
     current = new HashMap<>();
-    dateCreated = null;
+    dateCreated = LocalDate.MIN;
   }
 
   /**
-   * Adds the amount of shares for a stock.
+   * Adds the amount of shares for a stock checking that it's a chronological buy,
+   * and proper buy date.
+   *
    * @param ticker the ticker symbol of the stock
    * @param stock  the stock that shares will be bought for.
    * @param shares the number of shares to be added.
-   *  @param date the date that the share was added.
+   * @param date   the date that the share was added.
    * @throws FileNotFoundException if the file containing the stock data is not found.
    */
   public void addStockShare(String ticker, IStock stock, double shares, LocalDate date)
@@ -45,29 +48,28 @@ public class SmartPortfolio extends Portfolio implements ISmartPortfolio {
     ISmartStockShares stockShares = new SmartStockShares(shares, stock, date);
     stockShares.setBought(true);
 
-    if(dateCreated == null) {
+    if (dateCreated == LocalDate.MIN) {
+      dateCreated = date;
+    } else if (date.isBefore(dateCreated)) {
       dateCreated = date;
     }
-    else if(date.isBefore(dateCreated)) {
-      dateCreated = date;
-    }
-    if(bought.containsKey(ticker) && date.isBefore(this.getMostRecentTransaction(ticker))) {
-      throw new IllegalArgumentException("You cannot buy a stock from before the most" +
+    if (bought.containsKey(ticker) && date.isBefore(this.getMostRecentTransaction(ticker))) {
+      throw new IllegalArgumentException("You cannot buy a stock from before the most " +
               "recent transaction :" + date);
     }
-    if(stock.getEarliestDate().isAfter(date)) {
-      throw new IllegalArgumentException("You cannot buy a stock from the stock was ever created");
+    if (stock.getEarliestDate().isAfter(date)) {
+      throw new IllegalArgumentException("You cannot " +
+              "buy a stock from the stock was ever created");
     }
 
-    if(stock.getMostRecentDate().isBefore(date)) {
+    if (stock.getMostRecentDate().isBefore(date)) {
       throw new IllegalArgumentException("You cannot buy a stock from the future");
     }
 
-    if(bought.containsKey(ticker)) {
+    if (bought.containsKey(ticker)) {
       bought.get(ticker).add(stockShares);
 
-    }
-    else {
+    } else {
       ArrayList<ISmartStockShares> stockSharesArrayList = new ArrayList<>();
       stockSharesArrayList.add(stockShares);
       bought.put(ticker, stockSharesArrayList);
@@ -76,11 +78,12 @@ public class SmartPortfolio extends Portfolio implements ISmartPortfolio {
   }
 
   /**
-   * Removes shares of a stock to the portfolio.
+   * Removes shares of a stock to the portfolio given that the stock exists in this portfolio,
+   * is a chronological transaction, and has enough to sell.
    *
    * @param ticker the ticker symbol of the stock
    * @param shares the number of shares to remove
-   * @param date the date that the share was removed
+   * @param date   the date that the share was removed
    * @throws FileNotFoundException if the file containing the stock data is not found.
    */
   public void removeStockShare(String ticker, double shares, LocalDate date)
@@ -90,22 +93,25 @@ public class SmartPortfolio extends Portfolio implements ISmartPortfolio {
     }
     IStock stock = bought.get(ticker).getFirst().getStock();
 
-    if(bought.containsKey(ticker) && date.isBefore(this.getMostRecentTransaction(ticker))) {
-      throw new IllegalArgumentException("You cannot sell a stock from before the most" +
+    if (bought.containsKey(ticker) && date.isBefore(this.getMostRecentTransaction(ticker))) {
+      throw new IllegalArgumentException("You cannot sell a stock from before the most " +
               "recent transaction " + date);
     }
 
-    if(sold.containsKey(ticker)) {
+    if (bought.containsKey(ticker) && getTotalSharesOfBought(ticker) < shares) {
+      throw new IllegalArgumentException("You cannot sell shares " +
+              "you do not own enough shares of this stock");
+    }
+
+    if (sold.containsKey(ticker)) {
       sold.get(ticker).add(new SmartStockShares(shares, stock, date));
 
-    }
-    else {
+    } else {
       ArrayList<ISmartStockShares> stockShare = new ArrayList<>();
       stockShare.add(new SmartStockShares(shares, stock, date));
       sold.put(ticker, stockShare);
     }
     current = portfolioStateAtDate(LocalDate.now());
-    //System.out.println("reached");
 
 
   }
@@ -113,22 +119,29 @@ public class SmartPortfolio extends Portfolio implements ISmartPortfolio {
   /**
    * Determines the current information such as amount of shares for the stocks
    * and the stocks of a portfolio on a specific date.
-   * @param date the date that the user would like to obtain the information of the portfolio.
-   * @return The portfolio with most update information about the stocks and shares of the portfolio.
-   * @throws FileNotFoundException if the file containing the stock data is not found.
+   *
+   * @param date
+   *     the date that the user would like to obtain
+   *     the information of the portfolio.
+   * @return
+   *     The portfolio with most update information about
+   *     the stocks and shares of the portfolio.
+   * @throws FileNotFoundException
+   *     if the file containing the stock data is not found.
    */
-  public HashMap<String, ISmartStockShares> portfolioStateAtDate(LocalDate date)
+  public Map<String, ISmartStockShares> portfolioStateAtDate(LocalDate date)
           throws FileNotFoundException {
-    HashMap<String, ISmartStockShares> portfolioState = new HashMap<>();
-    for(Map.Entry<String, ArrayList<ISmartStockShares>> entry : bought.entrySet()) {
+    Map<String, ISmartStockShares> portfolioState = new HashMap<>();
+    for (Map.Entry<String, ArrayList<ISmartStockShares>> entry : bought.entrySet()) {
       double boughtStock = stockSharesAtDate(date, entry.getValue());
-      if(sold.containsKey(entry.getKey())) {
+      if (sold.containsKey(entry.getKey())) {
         double soldStock = stockSharesAtDate(date, sold.get(entry.getKey()));
         boughtStock -= soldStock;
       }
-      if(boughtStock != 0) {
+      if (boughtStock != 0) {
         portfolioState.put(entry.getKey(), new SmartStockShares(boughtStock,
-                entry.getValue().getFirst().getStock(), getMostRecentTransaction(entry.getKey())));
+                entry.getValue().getFirst().getStock(),
+                getMostRecentTransaction(entry.getKey())));
       }
     }
     return portfolioState;
@@ -137,13 +150,12 @@ public class SmartPortfolio extends Portfolio implements ISmartPortfolio {
 
   // A helper method that gets the current amount of shares on specific for the stocks.
   private double stockSharesAtDate(LocalDate date,
-                                        ArrayList<ISmartStockShares> stockSharesList)
+                                   ArrayList<ISmartStockShares> stockSharesList)
           throws FileNotFoundException {
     double sumShares = 0;
-    IStock stock = stockSharesList.get(0).getStock();
 
-    for(int i = 0; i < stockSharesList.size(); i++) {
-      if(stockSharesList.get(i).getDate().equals(date)
+    for (int i = 0; i < stockSharesList.size(); i++) {
+      if (stockSharesList.get(i).getDate().equals(date)
               || stockSharesList.get(i).getDate().isBefore(date)) {
 
         sumShares += stockSharesList.get(i).getShares();
@@ -153,35 +165,12 @@ public class SmartPortfolio extends Portfolio implements ISmartPortfolio {
   }
 
   /**
-   *  Gets the total amount of shares of a stock  that were a bought by a user.
+   * Gets the total amount of shares of a stock  that were a bought by a user.
+   *
    * @return the total of bought shares.
    */
   public Map<String, ArrayList<ISmartStockShares>> getBoughtStockSharesMap() {
     return bought;
-  }
-
-  /**
-   *  Gets the total amount of shares of a stock that were a sold by a user.
-   * @return the total of sold shares.
-   */
-  public Map<String, ArrayList<ISmartStockShares>> getSoldStockSharesMap() {
-    return sold;
-  }
-
-  /**
-   * Gets the total amount of shares that were owned by a user.
-   * @return the total of sold shares.
-   */
-  public Map<String, ISmartStockShares> getCurrentStockSharesMap() {
-    return current;
-  }
-
-
-  /**
-   * Sets the total amount of shares owned by a user.
-   */
-  public void setCurrentStockSharesMap(Map<String,  ISmartStockShares> currentStockSharesMap) {
-    this.current = currentStockSharesMap;
   }
 
   /**
@@ -192,10 +181,35 @@ public class SmartPortfolio extends Portfolio implements ISmartPortfolio {
   }
 
   /**
+   * Gets the total amount of shares of a stock that were a sold by a user.
+   *
+   * @return the total of sold shares.
+   */
+  public Map<String, ArrayList<ISmartStockShares>> getSoldStockSharesMap() {
+    return sold;
+  }
+
+  /**
    * Sets the total amount of sold shares  by a user.
    */
   public void setSoldStockSharesMap(Map<String, ArrayList<ISmartStockShares>> sold) {
     this.sold = sold;
+  }
+
+  /**
+   * Gets the total amount of shares that were owned by a user.
+   *
+   * @return the total of sold shares.
+   */
+  public Map<String, ISmartStockShares> getCurrentStockSharesMap() {
+    return current;
+  }
+
+  /**
+   * Sets the total amount of shares owned by a user.
+   */
+  public void setCurrentStockSharesMap(Map<String, ISmartStockShares> currentStockSharesMap) {
+    this.current = currentStockSharesMap;
   }
 
   // This is helper method that allows to get the most recent transaction.
@@ -203,14 +217,14 @@ public class SmartPortfolio extends Portfolio implements ISmartPortfolio {
 
     LocalDate mostRecentDate = bought.get(ticker).getFirst().getDate();
 
-    if(bought.containsKey(ticker)) {
-      for(ISmartStockShares s : bought.get(ticker)) {
-        if(s.getDate().isAfter(mostRecentDate)) {
+    if (bought.containsKey(ticker)) {
+      for (ISmartStockShares s : bought.get(ticker)) {
+        if (s.getDate().isAfter(mostRecentDate)) {
           mostRecentDate = s.getDate();
         }
       }
-      if(sold.containsKey(ticker)) {
-        for(ISmartStockShares s : sold.get(ticker)) {
+      if (sold.containsKey(ticker)) {
+        for (ISmartStockShares s : sold.get(ticker)) {
           if (s.getDate().isAfter(mostRecentDate)) {
             mostRecentDate = s.getDate();
           }
@@ -220,18 +234,34 @@ public class SmartPortfolio extends Portfolio implements ISmartPortfolio {
     return mostRecentDate;
   }
 
+  /**
+   * gets the date created of this portfolio.
+   *
+   * @return LocalDate dateCreated
+   */
   public LocalDate getDateCreated() {
     return dateCreated;
   }
 
+  /**
+   * sets the date created of this portfolio.
+   *
+   * @param dateCreated represents new dateCreated date
+   */
   public void setDateCreated(LocalDate dateCreated) {
     this.dateCreated = dateCreated;
   }
 
-//  public LocalDate getLatestOverallTransactionDate() {
-//
-//  }
 
+  // gets the total bought shares for a stock
+  private double getTotalSharesOfBought(String ticker) {
+    double totalShares = 0;
+    for (int i = 0; i < bought.get(ticker).size(); i++) {
+      bought.get(ticker).get(i).getShares();
+      totalShares += bought.get(ticker).get(i).getShares();
+    }
+    return totalShares;
+  }
 
 
 }

@@ -9,33 +9,53 @@ import model.ISmartPortfolio;
 import model.IStockMarket;
 import view.IView;
 
-public class BuyStockCommand extends ACommand{
+/**
+ * The BuyStockCommand class represents a command in a stock market application
+ * that allows users to purchase stocks for a specified portfolio. When executed,
+ * it prompts the user to input the number of shares they wish to buy and the
+ * date of the transaction. It interacts with the user interface (IView) and the
+ * stock market data (IStockMarket) to facilitate the purchase process. After
+ * successfully adding the stocks to the portfolio, it saves the updated portfolio
+ * data using SavePortfolioOperation. This class extends ACommand and implements
+ * the run method to execute its functionality within the application.
+ */
+public class BuyStockCommand extends ACommand {
   private ISmartPortfolio portfolio;
 
+  /**
+   * Constructs a BuyStockCommand object.
+   *
+   * @param view      the view component for user interaction
+   * @param s         the Scanner object for input handling
+   * @param portfolio the portfolio where stocks will be bought
+   */
   public BuyStockCommand(IView view, Scanner s, ISmartPortfolio portfolio) {
-   super(view, s);
-   this.portfolio = portfolio;
+    super(view, s);
+    this.portfolio = portfolio;
   }
 
+  /**
+   * Executes the command to purchase stocks for the specified portfolio. This command
+   * prompts the user to input the number of shares they want to buy and the date of
+   * the transaction. It validates user input, interacts with the user interface (IView)
+   * to gather necessary information, and then utilizes an InputAPIStockCommand to
+   * add the purchased stocks to the portfolio. After successfully updating the portfolio,
+   * it ensures the changes are saved using SavePortfolioOperation to persist the data.
+   *
+   * @param stockMarket the stock market instance providing access to stock data
+   * @throws IOException if there is an error during the execution of the command
+   */
   @Override
   public void run(IStockMarket stockMarket) throws IOException {
 
-//    view.writeMessage("Is the stock you want to buy currently in your portfolio?" +
-//            System.lineSeparator());
-//    view.writeMessage("Enter 'y' for yes, 'n' for no: ");
-//    String input = s.next();
-//    while (!input.equalsIgnoreCase("y") && !input.equalsIgnoreCase("n")) {
-//      view.writeMessage("Please enter 'y' for yes, 'n' for no: ");
-//      input = s.next();
-//    }
 
     view.writeMessage("How many shares would you like to buy? " +
-              System.lineSeparator());
-    view.writeMessage( "(after entering the shares you will be prompted to enter the " +
+            System.lineSeparator());
+    view.writeMessage("(after entering the shares you will be prompted to enter the " +
             "specific stock itself)" + System.lineSeparator());
     boolean valid = false;
     int shares = 0;
-    while(!valid) {
+    while (!valid) {
       try {
         shares = Integer.parseInt(s.next());
         valid = true;
@@ -43,8 +63,7 @@ public class BuyStockCommand extends ACommand{
         view.writeMessage("Please enter a positive whole number." + System.lineSeparator());
       }
     }
-//    view.writeMessage("What company would you like to buy " + shares + "of?" +
-//            System.lineSeparator());
+
 
     view.writeMessage("Please enter the date you'd like to buy this stock on: (YYYY-MM-DD)"
             + System.lineSeparator());

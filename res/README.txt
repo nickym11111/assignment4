@@ -15,10 +15,14 @@ Features That Properly Work In Model
 1. DailyStock Class:
 Holds the daily stock data with information such as ticker symbol, date, open, high, low,
 close, and volume. This class allows users to receive any specific information about a stock on a specific date.
+Due to not needing to make any changes to implement our new features we did not
+to add a new class and extend this class we continued to use our original version.
 
 2. StockShare Class:
 The StockShare class facilitates the management of individual stock holdings within a portfolio, allowing for
 easy retrieval. This class offers to retrieve data such as the stock and the amount of shares associated with that stock.
+Due to not needing to make any changes to implement our new features we did not
+to add a new class and extend this class we continued to use our original version.
 
 3. Portfolio Class:
 The Portfolio class manages a collection of stock shares, allowing users to add and retrieve shares of various stocks
@@ -36,6 +40,43 @@ The StockMarket class serves as a center that manages stocks and portfolios in t
 allow users to add, check, and retrieve stocks and portfolios. This class ensures data integrity by organizing
 and storing the data in HashMaps to have easy access and properly create a manipulation of stock market data.
 
+6. SmartPortfolio Class:
+The SmartPortfolio class introduces advanced functionalities for managing stock portfolios, enhancing the
+basic capabilities provided by its superclass, Portfolio. It extends its features by allowing users to add and
+sell shares , tracking the number of shares bought and sold through bought and sold maps respectively.
+Additionally, it maintains an up-to-date record of the current state of shares (current map) and the date of
+portfolio creation (dateCreated). Key methods such as addStockShare() and removeStockShare() facilitate
+the addition and removal of stock shares with validation checks ensuring transaction integrity and
+portfolio consistency. The portfolioStateAtDate() method retrieves the current state of the portfolio on a
+specific date, providing insights into the holdings and their respective quantities.
+
+7. SmartStockShares:
+The SmartStockShares class enhances the functionality of tracking stock shares within a portfolio by incorporating
+features related to purchase date and purchase status. It extends the basic properties of StockShares by adding
+methods that allow for setting and retrieving the date when shares were purchased
+as well as determining whether shares have been bought. This class supports management of
+stock transactions within a portfolio, ensuring accurate record-keeping of purchase dates and transaction statuses.
+
+
+9. ModelUtils
+The ModelUtil class serves as a  utility for initializing and managing data within the
+stock market system. It controls the  integration of stock and portfolio data by reading
+files from designated directories (stocks and portfolios). Through its initializeData method,
+this utility  populates the stock market instance  with stocks and
+portfolios, using FileStockDataStreamImpl for reading stock data and StockBuilderImpl for
+constructing stock objects. Additionally, it handles portfolio specifics such as current stock shares,
+bought shares, sold shares, and creation dates through file parsing and mapping methods.
+
+
+10.DateUtils
+The DateUtil class serves as a utility for handling dates within a system, offering essential
+methods for date manipulation and validation. It includes getNearestAvailableDate,
+which adjusts a given date to the nearest weekday (Friday),
+ensuring operational efficiency by providing a suitable business day for scheduling. Additionally,
+isWeekend determines whether a given date falls on a weekend (Saturday or Sunday), aiding in
+conditional logic and scheduling processes that require distinguishing between weekdays and weekends.
+Together, these methods enhance the functionality of date management, facilitating streamlined
+operations and ensuring accurate date-based within the system rather than giving the user no information.
 
 Features That Properly Work For Command
 --------
@@ -93,6 +134,50 @@ entering 's' or go back by entering 'b'. If the user enters an unrecognized inst
 displayed. Additionally, a note is provided indicating that some stocks may not be up-to-date if they were previously
 inputted.
 
+11. BuyStockCommand Class:
+The BuyStockCommand class facilitates the process of purchasing stocks shares within a portfolio management
+system. When executed, it prompts the user through a series of interactive prompts, beginning with the
+input of the desired number of shares to be bought and the transaction date. Utilizing input validation,
+it ensures that only valid, positive integers are accepted for shares, and valid date formats are
+provided.  Finally, it ensures data integrity by saving portfolio updates
+using the SavePortfolioOperation, thereby ensuring that all transactions are persisted for
+future reference and analysis.
+
+
+12. PortfolioCompositionCommand Class:
+The PortfolioCompositionCommand class allows users to view the composition of a portfolio at a
+specific date by prompting them for input and retrieving the relevant data.
+The class prompts the user to enter a date in the format YYYY-MM-DD. It validates the input
+date, ensuring it is correctly formatted and not earlier than the portfolio's creation date.
+Once a valid date is provided, the class retrieves the composition of the portfolio as of that date.
+This includes details such as the stock tickers and the number of shares held for each stock.
+The retrieved information is then displayed to the user through the view, offering a detailed
+snapshot of the portfolio's holdings on the specified date.
+
+
+13. PortfolioDistributionCommand Class:
+The PortfolioDistributionCommand class is designed to help users understand the
+distribution of their investment portfolio on a specific date. When executed,
+it prompts the user to enter a date in the format YYYY-MM-DD and validates this input.
+If the provided date is earlier than the portfolio's earliest purchase date, the user is
+informed that distribution data is unavailable for such dates. For valid dates,
+the class retrieves the portfolio's composition at that date, displaying the value
+of each stock owned. This includes calculating the total value of the shares for each
+stock based on their value on the specified date.
+
+
+14. SellStockCommand Class:
+The SellStockCommand class is designed to handle the user operation of selling stocks shares from a
+specified portfolio. It begins by prompting the user to input the ticker symbol of the stock
+they wish to sell, ensuring that the provided symbol is valid. Next, it asks for the number
+of shares to be sold, validating that the input is a positive whole number to avoid any invalid
+transactions. Following this, the class requests the date on which the sale should occur,
+performing validation to ensure the date is correctly formatted and valid. Upon gathering
+this information, the SellStockCommand executes the sell operation on the portfolio,
+adjusting the portfolio to reflect the sale of the specified stock, number of shares,
+and date. After the sell operation, the class saves the updated portfolio state to
+maintain data consistency.
+
 
 Features That Properly Work For Calculations/Strategies:
 --------
@@ -121,3 +206,31 @@ It prompts the user to input a date and then computes the total value of the por
 each stock by the number of shares and adding them together. If the user incorrectly inputs the date, it notifies the user and
 prompts them to try the process again.
 
+5.GetPortfolioPerformance Class:
+The GetPortfolioPerformance class features methods to calculate and display the financial performance of
+a portfolio over a specified time range, validating dates, adjusting for weekends, and using
+market data to compute and present the portfolio's value at regular intervals.
+
+
+6.GetStockPerformance Class:
+The GetStockPerformance class features methods to calculate and display the financial performance of
+a stock over a specified time range, validating dates, adjusting for weekends, and using
+market data to compute and present the portfolio's value at regular intervals. However, for stocks we do
+not have the date for like holidays we will inform the user that we do not have access to that stock when
+inputting it has a start date or end date.
+
+7.RebalancePortfolio Class:
+The RebalancePortfolio class allows users to rebalance their investment portfolio by redistributing
+their investments according to specified target percentages. The class provides a method
+for gathering user input regarding the target distribution and the date for rebalancing.
+It then calculates the necessary buy or sell transactions to adjust the portfolio to the desired state.
+The class ensures that the total target distribution does not exceed 100% and that the number of
+stocks in the portfolio matches the number of stocks specified in the target distribution.
+After rebalancing, it provides detailed information about the rebalanced portfolio,
+displaying the value and state of the portfolio on the specified date.
+
+
+
+
+*** PLEASE BE CAREFUL RUNNING THE CREATE PORTFOLIO AND INPUT PORTFOLIO BECAUSE WE WILL ACTUALLY
+CREATE NEW FILES ON YOUR COMPUTER IN THE PROGRAM THEN CAUSE ALL OUR OTHER TEST TO FAIL.

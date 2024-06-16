@@ -34,7 +34,7 @@ public class APIStockDataStreamImpl implements IStockDataStream {
   @Override
   public Readable getReadable() throws RuntimeException {
     String stockSymbol = ticker; //ticker symbol for Google
-    String apiKey = "W0M1JOKC82EZEQA8";//"QK596AIV63NNGJPP"; //
+    String apiKey = "KFKR6IY1AUVCVWVV"; //"W0M1JOKC82EZEQA8";//"QK596AIV63NNGJPP"; //
 
     URL url = null;
 

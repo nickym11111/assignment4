@@ -41,7 +41,7 @@ public class GainOrLoss implements IStockStrategies {
     try {
       LocalDate start = LocalDate.parse(s.next());
       LocalDate end = LocalDate.parse(s.next());
-      out.writeMessage(changeOverTime(start, end, stock) + " ");
+      out.writeMessage("$" + changeOverTime(start, end, stock));
     } catch (Exception e) {
       out.writeMessage("Invalid input, enter a valid date" +
               " (YYYY-MM-DD) followed by a space and another " +

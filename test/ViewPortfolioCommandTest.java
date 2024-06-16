@@ -35,13 +35,14 @@ public class ViewPortfolioCommandTest extends ACommandTest {
     stockMarket = new StockMarket();
     stockMarket.addPortfolio("nicky");
     command.run(stockMarket);
-    assertEquals("There are 1 portfolios, with the following names: \n" +
+    assertEquals("There are 2 portfolios, with the following names: \n" +
+            "arsema\n" +
             "nicky\n" +
-            "Enter a 'p' to check value of a portfolio\n" +
+            "Enter a 'p' to sell, buy, or view portfolio " +
+            "information about a specific portfolio\n" +
             "Enter 'b' to go back to previous options\n", builder.toString());
 
   }
-  // we have 1 portfolio so this test will pass "There are no portfolios" if portfolio is deleted
 
   @Test
   public void testRunToViewPortFoliosRandInp() throws IOException {
@@ -49,12 +50,15 @@ public class ViewPortfolioCommandTest extends ACommandTest {
     s = new Scanner(in);
     command = new ViewPortfolioCommand(view, s);
     command.run(stockMarket);
-    assertEquals("There are 1 portfolios, with the following names: \n" +
+    assertEquals("There are 2 portfolios, with the following names: \n" +
+            "arsema\n" +
             "nicky\n" +
-            "Enter a 'p' to check value of a portfolio\n" +
+            "Enter a 'p' to sell, buy, or view portfolio " +
+            "information about a specific portfolio\n" +
             "Enter 'b' to go back to previous options\n" +
             "Undefined instruction: k\n" +
-            "Enter a 'p' to check value of a portfolio\n" +
+            "Enter a 'p' to sell, buy, or view portfolio " +
+            "information about a specific portfolio\n" +
             "Enter 'b' to go back to previous options\n", builder.toString());
 
   }
@@ -65,15 +69,18 @@ public class ViewPortfolioCommandTest extends ACommandTest {
     s = new Scanner(in);
     command = new ViewPortfolioCommand(view, s);
     command.run(stockMarket);
-    assertEquals("There are 1 portfolios, with the following names: \n" +
+    assertEquals("There are 2 portfolios, with the following names: \n" +
+            "arsema\n" +
             "nicky\n" +
-            "Enter a 'p' to check value of a portfolio\n" +
+            "Enter a 'p' to sell, buy, or view portfolio information " +
+            "about a specific portfolio\n" +
             "Enter 'b' to go back to previous options\n" +
             "Enter name of portfolio\n" +
             "That portfolio was not found/ has not been inputted\n" +
             "Enter name of portfolio\n" +
             "Enter 'b' to go back to previous options\n" +
-            "Enter a 'p' to check value of a portfolio\n" +
+            "Enter a 'p' to sell, buy, or view portfolio " +
+            "information about a specific portfolio\n" +
             "Enter 'b' to go back to previous options\n", builder.toString());
 
   }

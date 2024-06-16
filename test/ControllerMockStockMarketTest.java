@@ -23,7 +23,7 @@ public class ControllerMockStockMarketTest {
     Readable reader = new StringReader("stock\nf\nstocks/AMZN.csv\nAMZN\nb\nq\n");
     Appendable appendable = new StringBuilder();
     IController controller = new StockController(appendable, reader, model);
-    controller.go();
+    controller.goController();
     assertEquals("addStock (AMZN) ", log.toString());
   }
 
@@ -34,7 +34,7 @@ public class ControllerMockStockMarketTest {
     Readable reader = new StringReader("vs\nb\nq\n");
     Appendable appendable = new StringBuilder();
     IController controller = new StockController(appendable, reader, model);
-    controller.go();
+    controller.goController();
     assertEquals("getStocks (Got stocks) ", log.toString());
   }
 
@@ -46,7 +46,7 @@ public class ControllerMockStockMarketTest {
     Readable reader = new StringReader("vp\nb\nq");
     Appendable appendable = new StringBuilder();
     IController controller = new StockController(appendable, reader, model);
-    controller.go();
+    controller.goController();
     assertEquals("getPortfolios (Got portfolios) ", log.toString());
   }
 
@@ -54,23 +54,24 @@ public class ControllerMockStockMarketTest {
   public void testportPortfolioNotComplete() throws IOException {
     StringBuilder log = new StringBuilder();
     IStockMarket model = new StockMarketMock(log);
-    Readable reader = new StringReader("portfolio\np\nnicky\n1\na\nb\nq");
+    Readable reader = new StringReader("portfolio\np\narsema\n1\na\nb\nq");
     Appendable appendable = new StringBuilder();
     IController controller = new StockController(appendable, reader, model);
-    controller.go();
-    assertEquals("addPortfolio (nicky) ", log.toString());
+    controller.goController();
+    assertEquals("addPortfolio (arsema) ", log.toString());
   }
 
   @Test
   public void testportPortfolio() throws IOException {
     StringBuilder log = new StringBuilder();
     IStockMarket model = new StockMarketMock(log);
-    Readable reader = new StringReader("portfolio\np\nnicky\n1\n1\nf\nstocks/AMZN.csv" +
-            "\nAMZN\nb\nq");
+    Readable reader = new StringReader("portfolio\np\narsema\n1\n1\n" +
+            "2024-05-01\nf\nstocks/NKE.csv" +
+            "\nNKE\nb\nq");
     Appendable appendable = new StringBuilder();
     IController controller = new StockController(appendable, reader, model);
-    controller.go();
-    assertEquals("addPortfolio (nicky) getPortfolio (nicky) getPortfolio (nicky) "
+    controller.goController();
+    assertEquals("addPortfolio (arsema) getPortfolio (arsema) getPortfolio (arsema) "
             , log.toString());
   }
 
@@ -79,15 +80,16 @@ public class ControllerMockStockMarketTest {
   public void testportPortfolioValue() throws IOException {
     StringBuilder log = new StringBuilder();
     IStockMarket model = new StockMarketMock(log);
-    Readable reader = new StringReader("portfolio\np\nnicky\n1\n1\nf\nstocks/AMZN.csv" +
-            "\nAMZN\nb\nvp\np\n" +
-            "nicky\nv\n05\nb\nb\nq");
+    Readable reader = new StringReader("portfolio\np\narsema\n1\n1\n" +
+            "2024-05-01\nf\nstocks/NKE.csv" +
+            "\nNKE\nb\nvp\np\n" +
+            "arsema\nv\n05\nb\nb\nq");
     Appendable appendable = new StringBuilder();
     IController controller = new StockController(appendable, reader, model);
-    controller.go();
-    assertEquals("addPortfolio (nicky) getPortfolio (nicky) getPortfolio " +
-                    "(nicky) getPortfolios " +
-                    "(Got portfolios) checkPortfolio (nicky)" +
+    controller.goController();
+    assertEquals("addPortfolio (arsema) getPortfolio (arsema) getPortfolio " +
+                    "(arsema) getPortfolios " +
+                    "(Got portfolios) checkPortfolio (arsema)" +
                     " checkPortfolio (v) checkPortfolio (05) ",
             log.toString());
   }
@@ -97,11 +99,11 @@ public class ControllerMockStockMarketTest {
   public void testStockStats() throws IOException {
     StringBuilder log = new StringBuilder();
     IStockMarket model = new StockMarketMock(log);
-    Readable reader = new StringReader("vs\ns\nAMZN\ng\n05\nb\nb\nq");
+    Readable reader = new StringReader("vs\ns\nNKE\ng\n05\nb\nb\nq");
     Appendable appendable = new StringBuilder();
     IController controller = new StockController(appendable, reader, model);
-    controller.go();
-    assertEquals("getStocks (Got stocks) checkStock (AMZN) checkStock (g)" +
+    controller.goController();
+    assertEquals("getStocks (Got stocks) checkStock (NKE) checkStock (g)" +
                     " checkStock (05) ",
             log.toString());
   }

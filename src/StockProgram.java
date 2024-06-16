@@ -1,5 +1,3 @@
-package view;
-
 import java.io.IOException;
 import java.io.InputStreamReader;
 
@@ -23,6 +21,6 @@ public class StockProgram {
     Appendable ap = System.out;
     IStockMarket stockMarket = new StockMarket();
     StockController controller = new StockController(ap, rd, stockMarket);
-    controller.go();
+    controller.goController();
   }
 }

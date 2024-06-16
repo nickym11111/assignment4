@@ -72,6 +72,9 @@ public class CheckSpecificStockCommand extends ACommand {
                   "between the start and end date"
                   + System.lineSeparator());
           break;
+        case "p":
+          new GetStockPerformance(view).stratGo(s, stock);
+          break;
         case "b":
           back = true;
           break;
@@ -96,6 +99,9 @@ public class CheckSpecificStockCommand extends ACommand {
     view.writeMessage("Enter 'c' to show which days are x-day crossovers" +
             " for this stock at a start date " +
             "and end date" + System.lineSeparator());
+
+    view.writeMessage("Enter 'p' to get the performance of a stock" +
+            " from a start date to end date" + System.lineSeparator());
 
     view.writeMessage("Enter 'b' to go back to previous options"
             + System.lineSeparator());

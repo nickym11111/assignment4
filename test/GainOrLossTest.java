@@ -19,19 +19,19 @@ import static org.junit.Assert.assertEquals;
  * if the stock has gained or lost its value.
  */
 public class GainOrLossTest {
-   LocalDate aDayInJan2014;
-   LocalDate aDayInFeb2015;
-   LocalDate aDayInMarch2015;
-   LocalDate aDayInApril2016;
-   LocalDate aDayInJune2016;
-   LocalDate aDayInJuly2017;
-   LocalDate aDayInAugust2017;
-   LocalDate aDayInSeptember2018;
-   LocalDate aDayInOctober2019;
-   LocalDate aDayInNovember2019;
-   LocalDate aDayInDecember2020;
-   LocalDate dayDoesNotExitInDecember;
-   LocalDate dateDoesExitInMay;
+  LocalDate aDayInJan2014;
+  LocalDate aDayInFeb2015;
+  LocalDate aDayInMarch2015;
+  LocalDate aDayInApril2016;
+  LocalDate aDayInJune2016;
+  LocalDate aDayInJuly2017;
+  LocalDate aDayInAugust2017;
+  LocalDate aDayInSeptember2018;
+  LocalDate aDayInOctober2019;
+  LocalDate aDayInNovember2019;
+  LocalDate aDayInDecember2020;
+  LocalDate dayDoesNotExitInDecember;
+  LocalDate dateDoesExitInMay;
 
   IStockDataStream data = new FileStockDataStreamImpl("stocks/GOOG.csv");
   IStockBuilder stockBuilder = new StockBuilderImpl();
