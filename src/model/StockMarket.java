@@ -61,6 +61,7 @@ public class StockMarket implements IStockMarket {
    */
   public void addPortfolio(String name) {
     portfolios.put(name, new SmartPortfolio(name));
+    System.out.println("reached");
   }
 
   /**

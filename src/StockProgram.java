@@ -24,10 +24,18 @@ public class StockProgram {
    */
 
   public static void main(String[] args) throws IOException {
-    Readable rd = new InputStreamReader(System.in);
-    Appendable ap = System.out;
-    IStockMarket stockMarket = new StockMarket();
-    StockController controller = new StockController(ap, rd, stockMarket);
-    controller.goController();
+    if(args.length == 1 && args[0].equals("-text")) {
+      Readable rd = new InputStreamReader(System.in);
+      Appendable ap = System.out;
+      IStockMarket stockMarket = new StockMarket();
+      StockController controller = new StockController(ap, rd, stockMarket);
+      controller.goController();
+    }
+    if(args.length == 0) {
+      ISmartStockMarket model = new SmartStockMarket();
+      IViewGUI view = new ViewGUIImpl();
+      IController controller = new StockControllerGUI(model, view);
+      controller.goController();
+    }
   }
 }
