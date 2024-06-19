@@ -38,11 +38,8 @@ public class ViewGUIImpl extends JFrame implements IViewGUI, ActionListener {
   private final JTextField tickerSymbolField;
   private final JTextField sharesField;
 
-  private int currentShares;
-  private String currentTicker;
-  private Date currentDate;
+
   private String currentPortfolio;
-  private String currentUserMessage;
 
   static {
     finalPortfolioButtons = new ArrayList<>();
@@ -70,6 +67,11 @@ public class ViewGUIImpl extends JFrame implements IViewGUI, ActionListener {
 
     mainPanel.setLayout(new BorderLayout());
     mainPanel.setPreferredSize(new Dimension(800, 400));
+    this.newPortfolioPanel = new JPanel();
+    this.newPortfolioPanel.setLayout(new BoxLayout(this.newPortfolioPanel, BoxLayout.Y_AXIS));
+
+    this.mainPanel.setLayout(new BorderLayout());
+    this.mainPanel.add(newPortfolioPanel, BorderLayout.CENTER);
 
     this.myListeners = new ArrayList<>();
     this.portfolioButtons = new ArrayList<>();
@@ -77,7 +79,6 @@ public class ViewGUIImpl extends JFrame implements IViewGUI, ActionListener {
     this.stockButtons = new ArrayList<>();
 
     this.portfolioOptions = new JDialog();
-    this.newPortfolioPanel = new JPanel();
 
     this.createPortfolio.addActionListener(this);
     this.createPortfolio.setActionCommand("create Portfolio");
@@ -87,20 +88,11 @@ public class ViewGUIImpl extends JFrame implements IViewGUI, ActionListener {
     this.sharesField = new JTextField();
     this.tickerSymbolField.setPreferredSize(new Dimension(50, 10));
     this.sharesField.setPreferredSize(new Dimension(50, 10));
-
-
-    this.currentTicker = "";
-    this.currentShares = -1;
-    this.currentDate = new Date();
-    this.currentPortfolio = "";
-
-    this.currentUserMessage = "";
     this.currentDialog = new JDialog();
 
     add(mainPanel);
     pack();
     setVisible(true);
-
   }
 
   @Override
@@ -134,13 +126,14 @@ public class ViewGUIImpl extends JFrame implements IViewGUI, ActionListener {
         break;
       case "enterInformationBuy" :
         try {
+          if(getCurrentShares() < 0) {
+            displayCurrentUserMessage("Not able to buy stock, share must be positive whole number");
+          }
           fireBuyStock(getCurrentDate(), getCurrentTicker(), getCurrentShares(),
                   this.currentPortfolio);
-          this.currentUserMessage = "Successfully bought stock";
-          displayCurrentUserMessage();
+          displayCurrentUserMessage("Successfully bought stock");
         } catch (Exception ex) {
-          this.currentUserMessage = ex.getMessage();
-          displayCurrentUserMessage();
+          displayCurrentUserMessage(ex.getMessage());
         }
         break;
 
@@ -148,12 +141,10 @@ public class ViewGUIImpl extends JFrame implements IViewGUI, ActionListener {
         try {
           fireSellStock(getCurrentDate(), getCurrentTicker(), getCurrentShares(),
                   this.currentPortfolio);
-          this.currentUserMessage = "Successfully sold stock";
-          displayCurrentUserMessage();
+          displayCurrentUserMessage("Successfully sold stock");
 
         } catch (Exception ex) {
-          this.currentUserMessage = ex.getMessage();
-          displayCurrentUserMessage();
+          displayCurrentUserMessage(ex.getMessage());
         }
         break;
       case "enterValueDate":
@@ -175,38 +166,39 @@ public class ViewGUIImpl extends JFrame implements IViewGUI, ActionListener {
 //    }
 //    //Which button got cliked!
     }
+    newPortfolioPanel.revalidate();
+    newPortfolioPanel.repaint();
+    mainPanel.revalidate();
+    mainPanel.repaint();
   }
 
-  private void displayCurrentUserMessage() {
+  private void displayCurrentUserMessage(String message) {
     JPanel pan = new JPanel();
     pan.setLayout(new FlowLayout());
     pan.add(new JLabel("Most recent transaction message: "));
-    pan.add(new JLabel(currentUserMessage));
+    pan.add(new JLabel(message));
     portfolioOptions.add(pan, BorderLayout.SOUTH);
     portfolioOptions.revalidate();
     portfolioOptions.repaint();
   }
 
   private String getCurrentTicker() {
-    this.currentTicker = this.tickerSymbolField.getText();
-    return this.currentTicker;
+    return this.tickerSymbolField.getText();
   }
 
   private int getCurrentShares() {
+    int shares = -1;
     try {
-      this.currentShares = Integer.parseInt(this.sharesField.getText());
-
+      shares = Integer.parseInt(this.sharesField.getText());
     }
     catch (NumberFormatException e) {
       //Not an integer
-      this.currentShares = -1;
     }
-    return this.currentShares;
+    return shares;
   }
 
   private Date getCurrentDate() {
-    this.currentDate = this.datePicker.getDate();
-    return this.currentDate;
+    return this.datePicker.getDate();
   }
 
   void fireBuyStock(Date date, String ticker, int shares, String portfolio)
@@ -336,18 +328,24 @@ public class ViewGUIImpl extends JFrame implements IViewGUI, ActionListener {
   }
 
   public void displayHeader() {
-    JLabel nameofProgram = new JLabel("Welcome to Our Stock Market");
-    JLabel instructions = new JLabel("Here are the Following Portfolios in Our System");
+    JLabel nameofProgram = new JLabel("Welcome to Our Stock Market Program");
+    JLabel instructions = new JLabel("Here are the current portfolios in our system");
+    JLabel options = new JLabel("Click on a portfolio to see options");
+
     nameofProgram.setFont(new Font("Times New Roman", Font.BOLD, 40));
     nameofProgram.setForeground(Color.BLUE);
     instructions.setFont(new Font("Times New Roman", Font.BOLD, 20));
     instructions.setForeground(Color.BLUE);
+    options.setFont(new Font("Times New Roman", Font.BOLD, 20));
+    options.setForeground(Color.BLUE);
     JPanel headerPanel = new JPanel();
     headerPanel.setLayout(new BoxLayout(headerPanel, BoxLayout.Y_AXIS));
     headerPanel.add(nameofProgram);
     headerPanel.add(instructions);
+    headerPanel.add(options);
     nameofProgram.setAlignmentX(Component.CENTER_ALIGNMENT);
     instructions.setAlignmentX(Component.CENTER_ALIGNMENT);
+    options.setAlignmentX(Component.CENTER_ALIGNMENT);
     mainPanel.add(headerPanel, BorderLayout.NORTH);
   }
 
@@ -436,7 +434,8 @@ public class ViewGUIImpl extends JFrame implements IViewGUI, ActionListener {
 
   public void displayPortOptions() {
     if (!portfolioOptions.isVisible()) {
-      portfolioOptions = new JDialog(this, "Portfolio Options", true);
+      portfolioOptions = new JDialog(this, "Portfolio Options for " +
+              this.currentPortfolio, true);
       portfolioOptions.setSize(400, 300);
       portfolioOptions.setLayout(new BorderLayout());
 
@@ -457,6 +456,7 @@ public class ViewGUIImpl extends JFrame implements IViewGUI, ActionListener {
     }
     JButton quitButton = createQuitButton();
     quitButton.addActionListener(e -> portfolioOptions.dispose());
+    quitButton.setAlignmentX(Component.CENTER_ALIGNMENT);
     buttonPanel.add(quitButton, BorderLayout.CENTER);
     //this.portfolioOptions.add(new JLabel("Most recent message"), BorderLayout.SOUTH);
     this.portfolioOptions.add(buttonPanel, BorderLayout.CENTER);
@@ -498,8 +498,8 @@ public class ViewGUIImpl extends JFrame implements IViewGUI, ActionListener {
   private JPanel dateInputPanel() {
     JPanel detailsPanel = new JPanel();
     detailsPanel.setLayout(new BoxLayout(detailsPanel, BoxLayout.Y_AXIS));
-    detailsPanel.add( new JLabel("Portfolio: " + this.currentPortfolio));
     detailsPanel.add( new JLabel("Select date: "));
+
     detailsPanel.add(this.datePicker, BorderLayout.CENTER);
 
     detailsPanel.add(Box.createRigidArea(new Dimension(20, 10)));
@@ -512,7 +512,7 @@ public class ViewGUIImpl extends JFrame implements IViewGUI, ActionListener {
     dialog.setLayout(new BorderLayout());
 
     dialog.add(stockInputPanel(), BorderLayout.CENTER);
-    JButton buyButton = new JButton("buy");
+    JButton buyButton = new JButton("Buy");
     buyButton.setActionCommand("enterInformationBuy");
     buyButton.addActionListener(this);
     buyButton.addActionListener(e -> {
@@ -537,7 +537,7 @@ public class ViewGUIImpl extends JFrame implements IViewGUI, ActionListener {
     dialog.setLayout(new BorderLayout());
 
     dialog.add(stockInputPanel(), BorderLayout.CENTER);
-    JButton sellButton = new JButton("sell");
+    JButton sellButton = new JButton("Sell");
     sellButton.setActionCommand("enterInformationSell");
     sellButton.addActionListener(this);
     sellButton.addActionListener(e -> {
@@ -559,7 +559,7 @@ public class ViewGUIImpl extends JFrame implements IViewGUI, ActionListener {
     JDialog dialog = new JDialog(this, "Value of Portfolio: " + this.currentPortfolio,
             true);
     dialog.setName("value dialog");
-    dialog.setSize(400, 300);
+    dialog.setSize(400, 200);
     dialog.setLayout(new BorderLayout());
 
     dialog.add(dateInputPanel(), BorderLayout.CENTER);
@@ -582,7 +582,7 @@ public class ViewGUIImpl extends JFrame implements IViewGUI, ActionListener {
   private void displayPortfolioComposition() {
     JDialog dialog = new JDialog(this, "Composition of Portfolio: " + this.currentPortfolio,
             true);
-    dialog.setSize(400, 300);
+    dialog.setSize(400, 200);
     dialog.setLayout(new BorderLayout());
 
     dialog.add(dateInputPanel(), BorderLayout.CENTER);
@@ -608,21 +608,46 @@ public class ViewGUIImpl extends JFrame implements IViewGUI, ActionListener {
   }
 
   private void addOneButton(String name) {
+//    JButton newButton = new JButton(name);
+//    newButton.setName(name);
+//    portfolioButtons.add(newButton);
+//    Dimension buttonSize = new Dimension(160, 100);
+//    newButton.addActionListener(this);
+//    newButton.setActionCommand("portfolio");
+//    newPortfolioPanel.add(newButton);
+//    newButton.setVisible(true);
+//    newButton.setFont(buttonFont);
+//    newButton.setSize(buttonSize);
+//    newButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+//    newPortfolioPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+//    newPortfolioPanel.repaint();
+//    newPortfolioPanel.revalidate();
+//    mainPanel.revalidate();
+//    mainPanel.repaint();
+//    mainPanel.add(newPortfolioPanel, BorderLayout.CENTER);
     JButton newButton = new JButton(name);
     newButton.setName(name);
     portfolioButtons.add(newButton);
+
     Dimension buttonSize = new Dimension(160, 100);
+    newButton.setPreferredSize(buttonSize);
+    newButton.setMaximumSize(buttonSize);
+    newButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+    newButton.setFont(buttonFont);
     newButton.addActionListener(this);
     newButton.setActionCommand("portfolio");
+
     newPortfolioPanel.add(newButton);
-    newButton.setFont(buttonFont);
-    newButton.setSize(buttonSize);
-    newButton.setAlignmentX(Component.CENTER_ALIGNMENT);
     newPortfolioPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+
+    newPortfolioPanel.revalidate();
+    newPortfolioPanel.repaint();
+    System.out.println(newPortfolioPanel.getActionMap().toString());
+    //newPortfolioPanel.setVisible(true);
     mainPanel.revalidate();
     mainPanel.repaint();
-    mainPanel.add(newPortfolioPanel, BorderLayout.CENTER);
   }
+
 
 
 }
