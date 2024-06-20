@@ -4,9 +4,7 @@ import java.io.InputStreamReader;
 import controller.IController;
 import controller.StockController;
 import controller.StockControllerGUI;
-import model.ISmartStockMarket;
 import model.IStockMarket;
-import model.SmartStockMarket;
 import model.StockMarket;
 import view.IViewGUI;
 import view.ViewGUIImpl;
@@ -32,7 +30,7 @@ public class StockProgram {
       controller.goController();
     }
     if(args.length == 0) {
-      ISmartStockMarket model = new SmartStockMarket();
+      IStockMarket model = new StockMarket();
       IViewGUI view = new ViewGUIImpl();
       IController controller = new StockControllerGUI(model, view);
       controller.goController();

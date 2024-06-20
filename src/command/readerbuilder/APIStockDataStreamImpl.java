@@ -78,7 +78,7 @@ public class APIStockDataStreamImpl implements IStockDataStream {
         e.printStackTrace();
       }
     }
-
+    System.out.println(output.toString());
     return new StringReader(output.toString());
   }
 

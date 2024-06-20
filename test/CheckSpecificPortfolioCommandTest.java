@@ -20,6 +20,7 @@ public class CheckSpecificPortfolioCommandTest extends ACommandTest {
     // constructor created to support exception thrown
   }
 
+
   @Before
   public void setUp() {
     in = new StringReader("b\n");

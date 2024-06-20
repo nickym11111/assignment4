@@ -10,7 +10,7 @@ stock and portfolio information.
 
 
 Features That Properly Work In Model
---------
+------------------------------------
 
 1. DailyStock Class:
 Holds the daily stock data with information such as ticker symbol, date, open, high, low,
@@ -78,8 +78,9 @@ conditional logic and scheduling processes that require distinguishing between w
 Together, these methods enhance the functionality of date management, facilitating streamlined
 operations and ensuring accurate date-based within the system rather than giving the user no information.
 
+
 Features That Properly Work For Command
---------
+----------------------------------------
 
 1. CheckSpecificPortfolioCommand Class:
 The CheckSpecificPortfolioCommand class interacts with the IStockMarket class to retrieve portfolio data and provides options
@@ -180,7 +181,7 @@ maintain data consistency.
 
 
 Features That Properly Work For Calculations/Strategies:
---------
+---------------------------------------------------------
 1. CrossOvers Class:
 The CrossOver class is a stock strategy for when crossover days occur which happens when the closing price for a day is
 greater than the x-day moving average for that day. It provides a method to calculate the number of crossover days within
@@ -228,6 +229,45 @@ The class ensures that the total target distribution does not exceed 100% and th
 stocks in the portfolio matches the number of stocks specified in the target distribution.
 After rebalancing, it provides detailed information about the rebalanced portfolio,
 displaying the value and state of the portfolio on the specified date.
+
+
+Features That Properly Work For GUI:
+-----------------------------------
+
+1. ViewGUIImpl Class
+
+The ViewGUIImpl class is designed to manage GUI for the stock program. It allows user to mange their
+stock portfolios through several key features. One of the main functionalities is a users can create
+new portfolios, each represented by a dedicated button within the interface. Once a portfolio is
+created, users can interact with it by clicking on the corresponding button, which provides options
+to view the portfolio's composition and value, or to initiate transactions such as buying or selling stocks.
+For stock transactions, the class offers a straightforward interface for buying stocks. Users can
+input the stock's ticker symbol, the quantity of shares they wish to purchase, and the specific
+date of the transaction. Additionally, the class supports selling stocks, allowing users to specify
+the stock's ticker symbol, the number of shares to sell, and the transaction date. These features
+ensure that users can manage their investments effectively, tracking their portfolio performance
+and making informed decisions about their stock transactions.
+
+
+2. Stock Controller GUI
+
+The controller also includes methods to handle various user actions. The getPortfolioButtons
+method retrieves all current portfolios from the stock market and sets these as interactive buttons
+in the view, enabling users to easily manage different portfolios. When a new portfolio is
+created through the handleCreatePortfolios method, it is added to the stock market and saved
+using the SavePortfolioOperation, with the view being updated to reflect this addition.
+For stock transactions, the handleBuyStock and handleSellStock methods manage the buying and
+selling of shares within a portfolio, ensuring dates are accurately converted to LocalDate for
+consistency. These methods either update existing stocks or add new ones by fetching details
+via an API, and subsequently save the updated portfolio state.
+
+Furthermore, the handleGetValue method calculates the total value of a portfolio as of a
+specified date using the ValuePortfolio command, updating the view with this value to
+inform the user. Similarly, the handleGetComposition method provides the composition of
+a portfolio on a given date, detailing each stock and its corresponding shares, which is
+then displayed in the view. Through these methods, the StockControllerGUI class efficiently
+manages user inputs and updates both the model and view, ensuring a seamless and responsive
+user experience in the stock market application.
 
 
 

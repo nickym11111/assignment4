@@ -55,7 +55,7 @@ public class SmartPortfolio extends Portfolio implements ISmartPortfolio {
     }
     if (bought.containsKey(ticker) && date.isBefore(this.getMostRecentTransaction(ticker))) {
       throw new IllegalArgumentException("You cannot buy a stock from before the most " +
-              "recent transaction :" + date);
+              "recent transaction :" + this.getMostRecentTransaction(ticker));
     }
     if (stock.getEarliestDate().isAfter(date)) {
       throw new IllegalArgumentException("You cannot " +
@@ -95,7 +95,7 @@ public class SmartPortfolio extends Portfolio implements ISmartPortfolio {
 
     if (bought.containsKey(ticker) && date.isBefore(this.getMostRecentTransaction(ticker))) {
       throw new IllegalArgumentException("You cannot sell a stock from before the most " +
-              "recent transaction " + date);
+              "recent transaction " + this.getMostRecentTransaction(ticker));
     }
 
     if (bought.containsKey(ticker) && getTotalSharesOfBought(ticker) < shares) {
@@ -261,6 +261,50 @@ public class SmartPortfolio extends Portfolio implements ISmartPortfolio {
       totalShares += bought.get(ticker).get(i).getShares();
     }
     return totalShares;
+  }
+
+  /**
+   * hasStockAtDate checks whether this portfolio has the stock of the given ticker symbol
+   * and that the date of the transaction is a date that is within the existing
+   * time range of the stock.
+   *
+   * @param date represents the date of the transaction
+   * @param tickerSymbol represents the ticker symbol of the stock being bought
+   * @return a boolean representing whether the stock already exists in the portfolio
+   * considering the date
+   */
+  public boolean hasStockAtDate(LocalDate date, String tickerSymbol) {
+    if(bought.containsKey(tickerSymbol)) {
+      IStock stock = bought.get(tickerSymbol).getFirst().getStock();
+      if(date.isAfter(stock.getEarliestDate()) && date.isBefore(stock.getMostRecentDate())) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /**
+   * addExistingStock adds a stock to this portfolio that already exists in the portfolio,
+   * this method is used when the portfolio already has the stock to prevent recalling the API
+   * when unnecessary.
+   *
+   * @param ticker represents the ticker symbol of the stock
+   * @param date represents the date of the buying transaction
+   * @param shares represents the shares being bought
+   * @throws FileNotFoundException if the file not found for the stock being bought
+   */
+  public void addExistingStock(String ticker, LocalDate date, double shares) throws FileNotFoundException {
+    if(bought.containsKey(ticker) && date.isBefore(this.getMostRecentTransaction(ticker))) {
+      throw new IllegalArgumentException("You cannot buy a stock from before the most " +
+              "recent transaction :" + this.getMostRecentTransaction(ticker));
+    }
+
+    if(bought.containsKey(ticker)) {
+      ArrayList<ISmartStockShares> stockSharesList = bought.get(ticker);
+      IStock stock = stockSharesList.getFirst().getStock();
+      ISmartStockShares newShares = new SmartStockShares(shares, stock, date );
+      stockSharesList.add(newShares);
+    }
   }
 
 

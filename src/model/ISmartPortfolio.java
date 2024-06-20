@@ -97,4 +97,8 @@ public interface ISmartPortfolio extends IPortfolio {
    */
   void setDateCreated(LocalDate dateCreated);
 
+  boolean hasStockAtDate(LocalDate date, String ticker);
+
+  void addExistingStock(String ticker, LocalDate date, double shares) throws FileNotFoundException;
+
 }

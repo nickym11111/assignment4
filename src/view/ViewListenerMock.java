@@ -1,4 +1,4 @@
-package controller;
+package view;
 
 import java.io.FileNotFoundException;
 import java.time.LocalDate;
@@ -6,48 +6,26 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Map;
-import java.util.Objects;
+
 import command.ValuePortfolio;
 import command.readerbuilder.APIStockDataStreamImpl;
-import command.readerbuilder.SavePortfolioOperation;
 import command.readerbuilder.StockBuilderImpl;
 import model.ISmartPortfolio;
 import model.ISmartStockShares;
 import model.IStock;
-import model.IStockMarket;
-import view.IViewGUI;
-import view.IViewListener;
+import model.StockMarket;
+
 
 /**
- * StockControllerGUI creates a new StockControllerGUI that accommodates a GUI which has users
- * input data on the interface and saves the data. Additionally, it will the go to the model
- * to update the new date inputted.
+ * A mock class for testing purposes.
  */
-public class StockControllerGUI implements IController, IViewListener {
-  private final IStockMarket stockMarket;
-  private final IViewGUI view;
+public class ViewListenerMock implements IViewListener {
+  private StringBuilder log;
+  private IViewGUI view = new ViewGUIImpl();
+  private StockMarket stockMarket = new StockMarket();
 
-  /**
-   * Constructs a StockControllerGUI object given a IStockMarket and IViewGUI objects.
-   * @param stockMarket
-   * @param view
-   */
-  public StockControllerGUI(IStockMarket stockMarket, IViewGUI view) {
-    this.stockMarket = Objects.requireNonNull(stockMarket);
-    this.view = Objects.requireNonNull(view);
-    this.view.addViewListener(this);
-  }
-
-  /**
-   * Will set the view visible and display the main options for our program such as
-   * the header, button options, and the portfolios.
-   */
-  @Override
-  public void goController() {
-    view.setVisible(true);
-    view.displayHeader();
-    view.displayButtonOptions();
-    view.displayPort();
+  public ViewListenerMock(StringBuilder log) throws FileNotFoundException {
+    this.log = log;
   }
 
 
@@ -55,11 +33,9 @@ public class StockControllerGUI implements IController, IViewListener {
    *  The method will get all the portfolio currently in the stock market to then be displayed to
    *  the view as a button.
    */
+  @Override
   public void getPortfolioButtons() {
-    Map<String, ISmartPortfolio> portfolios = this.stockMarket.getPortfolios();
-    ArrayList<String> names = new ArrayList<>(portfolios.keySet());
-    this.view.setPortfolioButtons(names);
-    this.view.requestFocus();
+    this.log.append("Get portfolio buttons received");
   }
 
 
@@ -68,40 +44,42 @@ public class StockControllerGUI implements IController, IViewListener {
    * market and save it.
    * @param name the name of the portfolio.
    */
+  @Override
   public void handleCreatePortfolios(String name) {
-    stockMarket.addPortfolio(name);
-    new SavePortfolioOperation(stockMarket.getPortfolio(name)).run();
-    this.view.requestFocus();
+    this.log.append("New portfolio created: ").append(name);
   }
 
   /**
    * Handles the case when a user would like to buy shares for a stock. Will add the number of
    * shares to that stock and save it to the model. Additionally, it converts dates to Local Date
-   * to assure that dates are properly adjusted and correct.
+   * to assure that dates are properly asjusted and correct.
    * @param date the date that shares are being bought on.
    * @param ticker the ticker symbol that represents the stock.
    * @param shares the number of shares being bought.
    * @param portfolio the user's portfolio that has the stock shares.
-   * @throws FileNotFoundException when we do not have the portfolio or stock inputted in our system.
+   * @throws FileNotFoundException when the system does not have the portfolio or stock inputted in our system.
    */
   @Override
-  public void handleBuyStock(Date date, String ticker, int shares, String portfolio) throws FileNotFoundException {
-    ISmartPortfolio p = stockMarket.getPortfolio(portfolio);
-    LocalDate d = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-    if(p.hasStockAtDate(d, ticker)) {
-      p.addExistingStock(ticker, d, shares);
+  public void handleBuyStock(Date date, String ticker, int shares, String portfolio)
+          throws FileNotFoundException {
 
-    }
-    else {
+    try {
+      ISmartPortfolio p = stockMarket.getPortfolio(portfolio);
+      LocalDate d = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
       APIStockDataStreamImpl apiStockDataStream = new APIStockDataStreamImpl(ticker);
-
       StockBuilderImpl stockBuilder = new StockBuilderImpl();
       IStock stock = stockBuilder.buildStock(ticker, apiStockDataStream);
-      p.addStockShare(ticker, stock, shares, d);
 
+      p.addStockShare(ticker, stock, shares, d);
+      this.log.append("The current date is: ").append(date)
+              .append(", the current symbol is:  ")
+              .append(ticker).append(", the current number of being bought shares is: ")
+              .append(shares).append(", the portfolio is: ")
+              .append(portfolio).append("\n");
+    } catch (Exception e) {
+      log.append(e.getMessage());
     }
-    new SavePortfolioOperation(p).run();
-    this.view.requestFocus();
+
   }
 
   /**
@@ -112,16 +90,24 @@ public class StockControllerGUI implements IController, IViewListener {
    * @param ticker the ticker symbol that represents the stock.
    * @param shares the number of shares being sold.
    * @param portfolio the user's portfolio that has the stock shares.
-   * @throws FileNotFoundException when we do not have the portfolio or stock inputted in our system.
+   * @throws FileNotFoundException when the system does not have the portfolio or stock inputted in our system.
    */
   @Override
   public void handleSellStock(Date date, String ticker, int shares, String portfolio)
           throws FileNotFoundException {
-    ISmartPortfolio p = stockMarket.getPortfolio(portfolio);
-    LocalDate d = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-    p.removeStockShare(ticker, shares, d);
-    new SavePortfolioOperation(p).run();
-    this.view.requestFocus();
+    try {
+      ISmartPortfolio p = stockMarket.getPortfolio(portfolio);
+      LocalDate d = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+      p.removeStockShare(ticker, shares, d);
+      this.log.append("The current date is: ").append(date)
+              .append(", the current symbol is:  ")
+              .append(ticker).append(", the current number of shares being sold is: ")
+              .append(shares).append(", the portfolio is: ")
+              .append(portfolio).append("\n");
+    } catch (Exception e) {
+      log.append(e.getMessage());
+    }
+
   }
 
   /**
@@ -132,11 +118,19 @@ public class StockControllerGUI implements IController, IViewListener {
    */
   @Override
   public void handleGetValue(Date date, String portfolio) {
-    ISmartPortfolio p = stockMarket.getPortfolio(portfolio);
-    LocalDate d = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-    double value = new ValuePortfolio(this.view).getPortfolioValue(d, p);
-    this.view.setValue(value, date);
-    this.view.requestFocus();
+
+    try {
+      ISmartPortfolio p = stockMarket.getPortfolio(portfolio);
+      LocalDate d = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+      double value = new ValuePortfolio(this.view).getPortfolioValue(d, p);
+      this.log.append("The current date is for the value of portfolio being found on: ").append(date)
+              .append(",this is the value for the portfolio: ")
+              .append(portfolio).append("\n").append(value);
+    } catch (Exception e) {
+      log.append(e.getMessage());
+    }
+
+
   }
 
   /**
@@ -147,22 +141,24 @@ public class StockControllerGUI implements IController, IViewListener {
    * @param portfolio the name of the portfolio requested to get the composition.
    */
   @Override
-  public void handleGetComposition(Date date, String portfolio)
-          throws FileNotFoundException {
+  public void handleGetComposition(Date date, String portfolio) throws FileNotFoundException {
     ISmartPortfolio p = stockMarket.getPortfolio(portfolio);
     LocalDate d = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
     Map<String, ISmartStockShares> port = p.portfolioStateAtDate(d);
     ArrayList<String> names = new ArrayList<>();
-    for(Map.Entry<String, ISmartStockShares> entry : port.entrySet()) {
+    for (Map.Entry<String, ISmartStockShares> entry : port.entrySet()) {
       ISmartStockShares s = entry.getValue();
       String name = entry.getKey();
       double shares = s.getShares();
       String line = name + ": " + shares;
       names.add(line);
-    }
-    this.view.setComposition(names, date);
-    this.view.requestFocus();
-  }
 
+    }
+    this.log.append("The current date is for the composition of " +
+                    "the portfolio being found on: ").append(date)
+            .append(", this is the composition for the portfolio: ")
+            .append(portfolio).append("\n").append(names);
+
+  }
 
 }
