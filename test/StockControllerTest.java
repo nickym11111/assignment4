@@ -98,12 +98,14 @@ public class StockControllerTest {
             "input a new stock (INPUT: 'stock')\n" +
             "input a new portfolio (INPUT: 'portfolio')\n" +
             "q or quit (quit the program) \n" +
-            "There are 8 stocks, with the following names: \n" +
+            "There are 10 stocks, with the following names: \n" +
             "NFLX\n" +
             "META\n" +
             "GOOG\n" +
             "AAPL\n" +
             "CMCSA\n" +
+            "HON\n" +
+            "ADBE\n" +
             "NKE\n" +
             "AMZN\n" +
             "MFST\n" +

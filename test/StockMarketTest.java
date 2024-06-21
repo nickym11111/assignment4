@@ -90,7 +90,7 @@ public class StockMarketTest {
 
     Map<String, IStock> stocks = stockMarket.getStocks();
 
-    assertEquals(8, stocks.size());
+    assertEquals(10, stocks.size());
     assertEquals(copyOfGoogle, stocks.get("GOOG"));
   }
 

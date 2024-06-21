@@ -83,7 +83,6 @@ public class ValuePortfolio implements IPortfolioStrategies {
       }
     }
 
-
     long bigRound = Math.round(totalValue * 100);
     return bigRound / 100.0;
   }

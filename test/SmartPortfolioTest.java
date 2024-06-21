@@ -19,6 +19,8 @@ import model.SmartPortfolio;
 import model.SmartStockShares;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * This test class looks at the SmartPortfolio to ensure the functionality
@@ -73,6 +75,20 @@ public class SmartPortfolioTest {
   }
 
   @Test
+  public void testAddShareNegative() throws FileNotFoundException {
+    assertEquals(0, portfolio.getStockShareMap().size());
+
+    try {
+      portfolio.addStockShare("AMZN", amazonStock, -5, present);
+    } catch (IllegalArgumentException e) {
+      assertEquals("You cannot buy a negative amount of stock.", e.getMessage());
+    }
+
+
+  }
+
+
+  @Test
   public void testAddStockShareHoliday() throws FileNotFoundException {
     ISmartStockShares expectedShare = new SmartStockShares(5, amazonStock,
             LocalDate.of(2024, 12, 5));
@@ -89,7 +105,7 @@ public class SmartPortfolioTest {
   @Test(expected = DateTimeException.class)
   public void testAddStockShareNegativeDate() throws FileNotFoundException {
     LocalDate negativeDate = LocalDate.of(2024, 12, -5);
-    
+
     portfolio.addStockShare("AMZN", amazonStock, 5, negativeDate);
 
     assertEquals(1,
@@ -115,6 +131,23 @@ public class SmartPortfolioTest {
   }
 
   @Test
+  public void testRemoveStockShareNegative() throws FileNotFoundException {
+    assertEquals(0, portfolio.getStockShareMap().size());
+    portfolio.addStockShare("AMZN", amazonStock, 5, present);
+
+    assertEquals(5, portfolio.getCurrentStockSharesMap()
+            .get("AMZN").getShares(), 0.01);
+
+    try {
+      portfolio.removeStockShare("AMZN", -2, present);
+    } catch (IllegalArgumentException e) {
+      assertEquals("You cannot sell a negative amount of stock.", e.getMessage());
+    }
+
+  }
+
+
+  @Test
   public void testNoInOrder() throws FileNotFoundException {
     LocalDate date = LocalDate.of(2005, 5, 1);
 
@@ -123,9 +156,8 @@ public class SmartPortfolioTest {
       portfolio.removeStockShare("AMZN", 5, date.minusDays(1));
     } catch (IllegalArgumentException e) {
       assertEquals("You cannot sell a stock from before " +
-              "the most recent transaction 2005-04-30", e.getMessage());
+              "the most recent transaction 2005-05-01", e.getMessage());
     }
-
 
 
   }
@@ -270,5 +302,92 @@ public class SmartPortfolioTest {
     portfolio.addStockShare("AMZN", amazonStock, 5, invalidDate);
 
   }
+
+  @Test
+  public void testHasStocksFalsePresentDay() {
+
+    assertFalse(portfolio.hasStockAtDate(present, "NKE"));
+
+  }
+
+
+  @Test
+  public void testHasStocksFalseHoliday() {
+
+    assertFalse(portfolio.hasStockAtDate(holiday, "NKE"));
+
+  }
+
+  @Test
+  public void testHasStocksTrueHoliday() throws FileNotFoundException {
+    portfolio.addStockShare("AMZN", amazonStock, 5, present);
+
+    assertTrue(portfolio.hasStockAtDate(holiday, "AMZN"));
+
+  }
+
+  @Test
+  public void testHasStocksTruePresent() throws FileNotFoundException {
+    portfolio.addStockShare("AMZN", amazonStock, 5, present);
+
+    assertTrue(portfolio.hasStockAtDate(present, "AMZN"));
+
+  }
+
+
+  @Test
+  public void testAddExistingStock() throws FileNotFoundException {
+    portfolio.addStockShare("AMZN", amazonStock, 5, present);
+    portfolio.addExistingStock("AMZN", present, 5);
+
+
+    assertEquals(portfolio.getBoughtStockSharesMap().get("AMZN").getFirst()
+            .getShares(), 5.0, 0.01);
+
+    assertEquals(portfolio.getBoughtStockSharesMap().size(), 1);
+
+    assertTrue(portfolio.hasStockAtDate(present, "AMZN"));
+  }
+
+  @Test
+  public void testAddExistingStockNegative() throws FileNotFoundException {
+    portfolio.addStockShare("AMZN", amazonStock, 5, present);
+
+    try {
+      portfolio.addExistingStock("AMZN", present, 5);
+    } catch (IllegalArgumentException e) {
+      assertEquals("You cannot buy negative shares of a stock.", e.getMessage());
+    }
+
+  }
+
+  @Test
+  public void testAddExistingStockNotOrder() throws FileNotFoundException {
+    portfolio.addStockShare("AMZN", amazonStock, 5, present);
+
+
+    try {
+      portfolio.addExistingStock("AMZN", present.minusYears(1), 5);
+    } catch (IllegalArgumentException e) {
+      assertEquals("You cannot buy a stock from before the most " +
+              "recent transaction :2024-05-01", e.getMessage());
+    }
+
+  }
+
+  @Test
+  public void testAddExistingStockOnHoliday() throws FileNotFoundException {
+    portfolio.addStockShare("AMZN", amazonStock, 5, holiday);
+    portfolio.addExistingStock("AMZN", holiday, 5);
+
+
+    assertEquals(portfolio.getBoughtStockSharesMap().get("AMZN").getFirst()
+            .getShares(), 5.0, 0.01);
+
+    assertEquals(portfolio.getBoughtStockSharesMap().size(), 1);
+
+    assertTrue(portfolio.hasStockAtDate(holiday, "AMZN"));
+  }
+
 
 }

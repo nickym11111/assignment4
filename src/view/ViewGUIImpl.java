@@ -1,6 +1,5 @@
 package view;
 
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -12,10 +11,28 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-import javax.swing.*;
 import javax.swing.border.Border;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JLabel;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
+import javax.swing.BoxLayout;
+import java.awt.Component;
+import javax.swing.JDialog;
+import javax.swing.JTextField;
+import javax.swing.JComboBox;
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.UIManager;
+
 
 /**
  * ViewGUIImpl is responsible for managing the graphical user interface
@@ -50,7 +67,7 @@ public class ViewGUIImpl extends JFrame implements IViewGUI, ActionListener {
     JButton sellButton = new JButton("Sell Stock");
     JButton buyButton = new JButton("Buy Stock");
     JButton[] portOptions = {compButton, valueButton, sellButton, buyButton};
-    for(JButton button : portOptions) {
+    for (JButton button : portOptions) {
       button.setFont(new Font("Monospaced", Font.PLAIN, 14));
     }
     buyButton.setActionCommand("Buy Stock");
@@ -58,7 +75,7 @@ public class ViewGUIImpl extends JFrame implements IViewGUI, ActionListener {
     valueButton.setActionCommand("Value");
     compButton.setActionCommand("Comp");
     finalPortfolioButtons.addAll(Arrays.asList(compButton, valueButton, sellButton, buyButton));
-    for(JButton button : finalPortfolioButtons) {
+    for (JButton button : finalPortfolioButtons) {
       button.setAlignmentX(Component.CENTER_ALIGNMENT);
     }
   }
@@ -110,7 +127,7 @@ public class ViewGUIImpl extends JFrame implements IViewGUI, ActionListener {
 
     Integer[] yearsArray = new Integer[100];
     for (int p = 0 ; p < 100; p ++) {
-        yearsArray[p] = 2024 - p;
+      yearsArray[p] = 2024 - p;
     }
     years = new JComboBox<>(yearsArray);
 
@@ -154,9 +171,9 @@ public class ViewGUIImpl extends JFrame implements IViewGUI, ActionListener {
    * Handles various action events triggered by the user. Such as when a portfolio is being
    * created it will make a button. Then if a user would like to buy or sell a shares of stock it
    * prompt them with the following text boxes to enter the information and similar for getting the
-   * compositons and valur of portfolio. Also,if a user clicks on their portfolio they have
+   * composition and valur of portfolio. Also,if a user clicks on their portfolio they have
    * options such as selling shares, buying shares, getting the
-   * the compostion or value of their protfolio.
+   * composition or value of their portfolio.
    * @param e The action event triggered by the user.
    */
   @Override
@@ -186,7 +203,7 @@ public class ViewGUIImpl extends JFrame implements IViewGUI, ActionListener {
       case "enterInformationBuy" :
 
         try {
-          if(getCurrentShares() < 0) {
+          if (getCurrentShares() < 0) {
             displayCurrentUserMessage("Not able to buy stock, " +
                     "share must be positive whole number");
           }
@@ -248,7 +265,9 @@ public class ViewGUIImpl extends JFrame implements IViewGUI, ActionListener {
   private void displayCurrentUserMessage(String message) {
     mostRecentMessageDisplayPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
     mostRecentMessageDisplayPanel.removeAll();
-    mostRecentMessageDisplayPanel.setLayout(new BoxLayout(mostRecentMessageDisplayPanel, BoxLayout.Y_AXIS));
+    mostRecentMessageDisplayPanel.setLayout(new BoxLayout(mostRecentMessageDisplayPanel,
+            BoxLayout.Y_AXIS));
+
     JLabel messageLabel = new JLabel("Most recent transaction message: ");
     messageLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
     JLabel resultedMessage = new JLabel(message);
@@ -290,8 +309,8 @@ public class ViewGUIImpl extends JFrame implements IViewGUI, ActionListener {
 
   }
 
-  //  A private method that gets the information for buying a stock shares from the controller
-  // and model to then be viewed in the GUI.
+  // A method that gets the information for buying a stock shares from the controller
+  // a model to then be viewed in the GUI.
   void fireBuyStock(Date date, String ticker, int shares, String portfolio)
           throws FileNotFoundException {
     for (IViewListener myListener : myListeners) {
@@ -299,39 +318,39 @@ public class ViewGUIImpl extends JFrame implements IViewGUI, ActionListener {
     }
   }
 
-  //  A private method that gets the information for selling a stock shares from the controller
+  // A method that gets the information for selling a stock shares from the controller
   // and model to then be viewed in the GUI.
-   void fireSellStock(Date date, String ticker, int shares, String portfolio)
+  void fireSellStock(Date date, String ticker, int shares, String portfolio)
           throws FileNotFoundException {
     for (IViewListener myListener : myListeners) {
       myListener.handleSellStock(date, ticker, shares, portfolio);
     }
   }
 
-  //  A private method that gets the information for getting the value of portfolio
+  //  A method that gets the information for getting the value of portfolio
   //  from the controller and model to then be viewed in the GUI.
   void fireValue(Date date, String portfolio) {
-    for(IViewListener myListener : myListeners) {
+    for (IViewListener myListener : myListeners) {
       myListener.handleGetValue(date, portfolio);
     }
   }
 
-  //  A private method that gets the information for getting the composition of portfolio
+  //  A method that gets the information for getting the composition of portfolio
   //  from the controller and model to then be viewed in the GUI.
   void fireComp(Date date, String portfolio) throws FileNotFoundException {
-    for(IViewListener myListener : myListeners) {
+    for (IViewListener myListener : myListeners) {
       myListener.handleGetComposition(date, portfolio);
     }
   }
 
-  // A private method that displays all the portfolio as buttons.
+  // A method that displays all the portfolio as buttons.
   void getPortfolioButtons() {
     for (IViewListener myListener : myListeners) {
       myListener.getPortfolioButtons();
     }
   }
 
-  // A private method that displays all the new portfolio as a button while
+  // A method that displays all the new portfolio as a button while
   // adding it to the list of portfolio and saving it on the computer.
   void getNewPortfolio(String name) {
     for (IViewListener myListener : myListeners) {
@@ -360,7 +379,8 @@ public class ViewGUIImpl extends JFrame implements IViewGUI, ActionListener {
     if (currentDialog != null && currentDialog.isVisible()) {
       JPanel panel = new JPanel();
       panel.setLayout(new FlowLayout());
-      panel.add(new JLabel("Value at " + new SimpleDateFormat("yyyy/MM/dd").format(date) + ": " + value));
+      panel.add(new JLabel("Value at " +
+              new SimpleDateFormat("yyyy/MM/dd").format(date) + ": " + value));
       JButton cancelButton = new JButton("Back");
       cancelButton.addActionListener(this);
       cancelButton.addActionListener(e -> currentDialog.dispose());
@@ -372,7 +392,6 @@ public class ViewGUIImpl extends JFrame implements IViewGUI, ActionListener {
       currentDialog.repaint();
     }
   }
-
 
   /**
    * Displays the composition of the portfolio on specific date onto the screen.
@@ -386,7 +405,7 @@ public class ViewGUIImpl extends JFrame implements IViewGUI, ActionListener {
       panel.setLayout(new FlowLayout());
       panel.add(new JLabel("Composition at " +
               new SimpleDateFormat("yyyy/MM/dd").format(date) + ": " ));
-      for(int i = 0; i<comp.size(); i++) {
+      for (int i = 0; i < comp.size(); i++) {
         JLabel label = new JLabel(comp.get(i));
         panel.add(label);
       }
@@ -401,8 +420,6 @@ public class ViewGUIImpl extends JFrame implements IViewGUI, ActionListener {
       currentDialog.repaint();
     }
   }
-
-
 
   /**
    * Displays the header of our program to welcome our user and instructions to
@@ -471,14 +488,7 @@ public class ViewGUIImpl extends JFrame implements IViewGUI, ActionListener {
    * Displays the portfolios in our system onto the interface.
    */
   public void displayPort() {
-    getPortfolioButtons(); // Populate newPortfolioPanel with buttons
-    JScrollPane scrollPane = new JScrollPane(newPortfolioPanel);
-
-    scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-    scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-    scrollPane.setPreferredSize(new Dimension(50, 50));
-
-    scrollPane.setBorder(BorderFactory.createLineBorder(Color.WHITE, 10));
+    getPortfolioButtons();
     newPortfolioPanel.setBackground(backgroundColor);
     newPortfolioPanel.setPreferredSize(new Dimension(1000, 1000));
     add(newPortfolioPanel, BorderLayout.CENTER);
@@ -487,17 +497,13 @@ public class ViewGUIImpl extends JFrame implements IViewGUI, ActionListener {
   }
 
   //Displays the newly create portfolio in our system onto the interface.
-  private void
-  displayCreatePortfolio() {
+  private void displayCreatePortfolio() {
     JDialog dialog = new JDialog(this, "Create New Portfolio", true);
     dialog.setLayout(new BorderLayout());
-
     JPanel panel = new JPanel();
     panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-
     JLabel nameLabel = new JLabel("Portfolio Name:");
     JTextField nameField = new JTextField(20);
-
     nameField.addKeyListener(new KeyAdapter() {
       @Override
       public void keyPressed(KeyEvent e) {
@@ -719,8 +725,8 @@ public class ViewGUIImpl extends JFrame implements IViewGUI, ActionListener {
   }
 
   /**
-   * Adds a view listener to our list of listener to handle the different action commands
-   * @param listener the current listern that will be added to the list.
+   * Adds a view listener to our list of listener to handle the different action commands.
+   * @param listener the current listener that will be added to the list.
    */
   @Override
   public void addViewListener(IViewListener listener) {
@@ -737,7 +743,6 @@ public class ViewGUIImpl extends JFrame implements IViewGUI, ActionListener {
     newButton.addActionListener(this);
     newButton.setActionCommand("portfolio");
 
- //    Add mouse listener for hover effect
     newButton.addMouseListener(new MouseAdapter() {
       @Override
       public void mouseEntered(MouseEvent e) {
@@ -752,7 +757,6 @@ public class ViewGUIImpl extends JFrame implements IViewGUI, ActionListener {
         newButton.setForeground(UIManager.getColor("Button.foreground"));
       }
     });
-    //remove(newPortfolioPanel);
     setFocusable(true);
     requestFocus();
     newButton.setName(name);
@@ -760,12 +764,8 @@ public class ViewGUIImpl extends JFrame implements IViewGUI, ActionListener {
     portfolioButtons.add(newButton);
     newPortfolioPanel.add(newButton);
     newPortfolioPanel.add(Box.createRigidArea(new Dimension(0, 10)));
-
-    //add(newPortfolioPanel, BorderLayout.CENTER);
-
     newPortfolioPanel.revalidate();
     newPortfolioPanel.repaint();
-
     repaint();
   }
 

@@ -35,8 +35,6 @@ public class SavePortfolioOperation {
   public void run() {
     File theDir = new File(port + portfolio.getName());
     boolean x = theDir.mkdir();
-    System.out.println("directory status: " + x);
-    System.out.println("Portfolio name:" + portfolio.getName());
 
     writeCurrentToFile();
     writeBoughtFile();

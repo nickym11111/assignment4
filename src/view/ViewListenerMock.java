@@ -57,13 +57,17 @@ public class ViewListenerMock implements IViewListener {
    * @param ticker the ticker symbol that represents the stock.
    * @param shares the number of shares being bought.
    * @param portfolio the user's portfolio that has the stock shares.
-   * @throws FileNotFoundException when the system does not have the portfolio or stock inputted in our system.
+   * @throws FileNotFoundException when the system does not have the portfolio
+   *                               or stock inputted in our system.
    */
   @Override
   public void handleBuyStock(Date date, String ticker, int shares, String portfolio)
           throws FileNotFoundException {
 
     try {
+      if (shares < 0 ) {
+        throw new IllegalArgumentException("Shares cannot be negative");
+      }
       ISmartPortfolio p = stockMarket.getPortfolio(portfolio);
       LocalDate d = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
       APIStockDataStreamImpl apiStockDataStream = new APIStockDataStreamImpl(ticker);
@@ -90,12 +94,16 @@ public class ViewListenerMock implements IViewListener {
    * @param ticker the ticker symbol that represents the stock.
    * @param shares the number of shares being sold.
    * @param portfolio the user's portfolio that has the stock shares.
-   * @throws FileNotFoundException when the system does not have the portfolio or stock inputted in our system.
+   * @throws FileNotFoundException when the system does not have the portfolio
+   *                               or stock inputted in our system.
    */
   @Override
   public void handleSellStock(Date date, String ticker, int shares, String portfolio)
           throws FileNotFoundException {
     try {
+      if (shares < 0 ) {
+        throw new IllegalArgumentException("Shares cannot be negative");
+      }
       ISmartPortfolio p = stockMarket.getPortfolio(portfolio);
       LocalDate d = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
       p.removeStockShare(ticker, shares, d);
@@ -123,7 +131,8 @@ public class ViewListenerMock implements IViewListener {
       ISmartPortfolio p = stockMarket.getPortfolio(portfolio);
       LocalDate d = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
       double value = new ValuePortfolio(this.view).getPortfolioValue(d, p);
-      this.log.append("The current date is for the value of portfolio being found on: ").append(date)
+      this.log.append("The current date is for the value of " +
+                      "portfolio being found on: ").append(date)
               .append(",this is the value for the portfolio: ")
               .append(portfolio).append("\n").append(value);
     } catch (Exception e) {

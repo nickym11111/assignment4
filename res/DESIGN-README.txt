@@ -1,3 +1,63 @@
+DESIGN READ_ME FOR PART 3:
+
+Our design for part 3 followed the same MVC structure as parts 1 and 2. ALl design documentation
+for parts one and 2 is written below.
+
+In part 3 we made extension to our old code with new classes and interfaces and made minimal but
+necessary modifications, we followed the design rules (SOLID) and follow 'open to extension, closed to
+modification' throughout our code.
+
+Here is the description of our design (including changes) for part 3 by package:
+----------------------------------------------------------------------------------------------------
+In the model:
+
+We made extremely minimal changes that were only made because of slight point deduction on the last
+assignment. To our smart portfolio class we added methods to buy a stock without needing to call
+the API everytime to avoid unnecessary data calls. hasStockAtDate which checks if the stock exists
+for the date in this portfolio, indicating whether we need to make an API call or not, and
+addExistingStock which adds a stock with a number of shares and date to a pre-existing stock in the
+portfolio. Additionally, we added catches for negative shares in add and remove stock methods in
+SmartPortfolio. These were the only small and necessary changes we made to the model based off of feedback.
+Everything else was kept the same demonstrating good design and usage of previous code.
+
+----------------------------------------------------------------------------------------------------
+In the controller:
+
+In the controller package we did not change any old code, however we did add a new controller class
+that implements the IController interface. This new controller class instead takes in a IViewGUI and
+a model, as opposed to the other controller class which takes in an IView, model, and a readable.
+This new controller class, StockControllerGUI was created to be a compatible controller type with the
+new view (GUI) without changing our old code. This design choice allowed us to not change any of our
+old code and add methods to the new controller to pass model information back and forth to the view
+based on input received from the view.
+
+In the command package and readerbuilder package we did not need to change any old code.
+
+----------------------------------------------------------------------------------------------------
+In the view:
+
+In the view package we did not change any of our old code. Instead, we made new classes and new
+interfaces. We made a new IViewGUI which extends our old IView and represents an interface for a GUI
+view with appropriate methods to display GUI features to the user and create ways for the user
+to interact to complete desired actions. The implementation of this interface is written as our
+class ViewGUIImpl, which implements all the methods and creates our GUI that uses the StockControllerGUI.
+We also made an interface IViewListener which represents a listener of the view, and has methods
+for handling certain actions based on the listened input. The StockControllerGUI implements the
+IViewListener as it demonstrates a controller that operates based on the listened inputs of the view.
+In addition, the StockControllerGUI adds itself as a IViewListener of the IViewGUI and displays the
+GUI as its initialized.
+
+----------------------------------------------------------------------------------------------------
+
+Overall, we designed our program like this to avoid modifying any old code, add on new extensions for
+new user interfaces. And create clean communication between the controller and view for a GUI.
+By having the controller be a listener to the view and then update the view based on the data in the
+model, our user can have a good user experience while our code can easily be updated to add new functionality
+without changing much of our old code. We followed SOLID principles and 'open to extension closed to
+modification' for our new GUI.
+
+
+=======================================================================================================
 
 DESIGN READ-ME FOR PART 2:
 

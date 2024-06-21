@@ -45,6 +45,10 @@ public class SmartPortfolio extends Portfolio implements ISmartPortfolio {
    */
   public void addStockShare(String ticker, IStock stock, double shares, LocalDate date)
           throws FileNotFoundException {
+    if (shares < 0) {
+      throw new IllegalArgumentException("You cannot buy a negative amount of stock.");
+    }
+
     ISmartStockShares stockShares = new SmartStockShares(shares, stock, date);
     stockShares.setBought(true);
 
@@ -88,6 +92,9 @@ public class SmartPortfolio extends Portfolio implements ISmartPortfolio {
    */
   public void removeStockShare(String ticker, double shares, LocalDate date)
           throws FileNotFoundException {
+    if (shares < 0) {
+      throw new IllegalArgumentException("You cannot sell a negative amount of stock.");
+    }
     if (!bought.containsKey(ticker)) {
       throw new IllegalArgumentException("You cannot remove a stock you never bought");
     }
@@ -271,12 +278,12 @@ public class SmartPortfolio extends Portfolio implements ISmartPortfolio {
    * @param date represents the date of the transaction
    * @param tickerSymbol represents the ticker symbol of the stock being bought
    * @return a boolean representing whether the stock already exists in the portfolio
-   * considering the date
+   *         considering the date
    */
   public boolean hasStockAtDate(LocalDate date, String tickerSymbol) {
-    if(bought.containsKey(tickerSymbol)) {
+    if (bought.containsKey(tickerSymbol)) {
       IStock stock = bought.get(tickerSymbol).getFirst().getStock();
-      if(date.isAfter(stock.getEarliestDate()) && date.isBefore(stock.getMostRecentDate())) {
+      if (date.isAfter(stock.getEarliestDate()) && date.isBefore(stock.getMostRecentDate())) {
         return true;
       }
     }
@@ -293,13 +300,17 @@ public class SmartPortfolio extends Portfolio implements ISmartPortfolio {
    * @param shares represents the shares being bought
    * @throws FileNotFoundException if the file not found for the stock being bought
    */
-  public void addExistingStock(String ticker, LocalDate date, double shares) throws FileNotFoundException {
-    if(bought.containsKey(ticker) && date.isBefore(this.getMostRecentTransaction(ticker))) {
+  public void addExistingStock(String ticker, LocalDate date, double shares)
+          throws FileNotFoundException {
+    if (shares < 0) {
+      throw new IllegalArgumentException("You cannot buy negative shares of a stock.");
+    }
+    if (bought.containsKey(ticker) && date.isBefore(this.getMostRecentTransaction(ticker))) {
       throw new IllegalArgumentException("You cannot buy a stock from before the most " +
               "recent transaction :" + this.getMostRecentTransaction(ticker));
     }
 
-    if(bought.containsKey(ticker)) {
+    if (bought.containsKey(ticker)) {
       ArrayList<ISmartStockShares> stockSharesList = bought.get(ticker);
       IStock stock = stockSharesList.getFirst().getStock();
       ISmartStockShares newShares = new SmartStockShares(shares, stock, date );

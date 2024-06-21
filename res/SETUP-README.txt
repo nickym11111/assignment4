@@ -14,10 +14,20 @@
    - paste it into the new folder
    - cd to that folder
    - run : java -jar NameOfJarFile.jar
+   - to run text based interface: java -jar NameOfJarFile.jar -text
    (if your having problems check that you have the most recent java on your computer (22))
    (if it says its picking up a DS_STORE portfolio run: find . -name ".DS_Store" -delete)
+   (if having issues be sure to call the delete line above in the portfolios folder of the new folder you made
+   and possibly the portfolios in the assignment file)
    - to open it with the most recent java : ~/OpenJDK/jdk-22.0.1.jdk/Contents/Home/bin/java -jar NameOfJar.jar
 
+
+** Creating and Managing portfolios ** FOR ASSIGNMENT 3:
+
+All saved portfolios are displayed on the opening page of the GUI. To create a new portfolio press
+the create portfolios button, enter the name, and press enter. To buy, sell, find value, or composition
+of any portfolio, click on the button for that portfolio itself. To close the program press the quit
+button on the front page.
 
 
 ** Creating and Managing Stocks **

@@ -29,8 +29,8 @@ public class StockControllerGUI implements IController, IViewListener {
 
   /**
    * Constructs a StockControllerGUI object given a IStockMarket and IViewGUI objects.
-   * @param stockMarket
-   * @param view
+   * @param stockMarket the object that is being used to be adjusted in the GUI.
+   * @param view the object class that provides the physical appearance of the GUI.
    */
   public StockControllerGUI(IStockMarket stockMarket, IViewGUI view) {
     this.stockMarket = Objects.requireNonNull(stockMarket);
@@ -82,19 +82,20 @@ public class StockControllerGUI implements IController, IViewListener {
    * @param ticker the ticker symbol that represents the stock.
    * @param shares the number of shares being bought.
    * @param portfolio the user's portfolio that has the stock shares.
-   * @throws FileNotFoundException when we do not have the portfolio or stock inputted in our system.
+   * @throws FileNotFoundException when we do not have the portfolio
+   *                               or stock inputted in our system.
    */
   @Override
-  public void handleBuyStock(Date date, String ticker, int shares, String portfolio) throws FileNotFoundException {
+  public void handleBuyStock(Date date, String ticker, int shares, String portfolio)
+          throws FileNotFoundException {
     ISmartPortfolio p = stockMarket.getPortfolio(portfolio);
     LocalDate d = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-    if(p.hasStockAtDate(d, ticker)) {
+    if (p.hasStockAtDate(d, ticker)) {
       p.addExistingStock(ticker, d, shares);
 
     }
     else {
       APIStockDataStreamImpl apiStockDataStream = new APIStockDataStreamImpl(ticker);
-
       StockBuilderImpl stockBuilder = new StockBuilderImpl();
       IStock stock = stockBuilder.buildStock(ticker, apiStockDataStream);
       p.addStockShare(ticker, stock, shares, d);
@@ -112,7 +113,8 @@ public class StockControllerGUI implements IController, IViewListener {
    * @param ticker the ticker symbol that represents the stock.
    * @param shares the number of shares being sold.
    * @param portfolio the user's portfolio that has the stock shares.
-   * @throws FileNotFoundException when we do not have the portfolio or stock inputted in our system.
+   * @throws FileNotFoundException when we do not have the portfolio or
+   *                                stock inputted in our system.
    */
   @Override
   public void handleSellStock(Date date, String ticker, int shares, String portfolio)
@@ -153,7 +155,7 @@ public class StockControllerGUI implements IController, IViewListener {
     LocalDate d = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
     Map<String, ISmartStockShares> port = p.portfolioStateAtDate(d);
     ArrayList<String> names = new ArrayList<>();
-    for(Map.Entry<String, ISmartStockShares> entry : port.entrySet()) {
+    for (Map.Entry<String, ISmartStockShares> entry : port.entrySet()) {
       ISmartStockShares s = entry.getValue();
       String name = entry.getKey();
       double shares = s.getShares();

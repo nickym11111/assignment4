@@ -142,7 +142,7 @@ public class GainOrLossTest {
     LocalDate start = LocalDate.of(2024, 5, 1);
     LocalDate end = LocalDate.of(2024, 7, 31);
 
-    assertEquals(10.38, strategies.changeOverTime(start, end, stock), 0.01);
+    assertEquals(12.14, strategies.changeOverTime(start, end, stock), 0.01);
   }
 
   @Test

@@ -22,14 +22,14 @@ public class StockProgram {
    */
 
   public static void main(String[] args) throws IOException {
-    if(args.length == 1 && args[0].equals("-text")) {
+    if (args.length == 1 && args[0].equals("-text")) {
       Readable rd = new InputStreamReader(System.in);
       Appendable ap = System.out;
       IStockMarket stockMarket = new StockMarket();
       StockController controller = new StockController(ap, rd, stockMarket);
       controller.goController();
     }
-    if(args.length == 0) {
+    if (args.length == 0) {
       IStockMarket model = new StockMarket();
       IViewGUI view = new ViewGUIImpl();
       IController controller = new StockControllerGUI(model, view);

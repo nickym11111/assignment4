@@ -1,7 +1,6 @@
 package view;
 
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -33,7 +32,8 @@ public interface IViewListener {
    * @param ticker the ticker symbol that represents the stock.
    * @param shares the number of shares being bought.
    * @param portfolio the user's portfolio that has the stock shares.
-   * @throws FileNotFoundException when the system does not have the portfolio or stock inputted in our system.
+   * @throws FileNotFoundException when the system does not have the portfolio
+   *                               or stock inputted in our system.
    */
   void handleBuyStock(Date date, String ticker, int shares, String portfolio)
           throws FileNotFoundException;
@@ -46,7 +46,8 @@ public interface IViewListener {
    * @param ticker the ticker symbol that represents the stock.
    * @param shares the number of shares being sold.
    * @param portfolio the user's portfolio that has the stock shares.
-   * @throws FileNotFoundException when the system does not have the portfolio or stock inputted in our system.
+   * @throws FileNotFoundException when the system does not have the
+   *                               portfolio or stock inputted in our system.
    */
   void handleSellStock(Date date, String ticker, int shares, String portfolio)
           throws FileNotFoundException;

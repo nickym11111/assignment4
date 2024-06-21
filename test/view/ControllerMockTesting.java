@@ -17,34 +17,21 @@ import static org.junit.Assert.assertEquals;
  *  actions and displaying the proper information.
  */
 public class ControllerMockTesting {
+  private final Date goodDate = new Date(2024 - 1900, Calendar.JUNE, 18);
+  private final Date pastDate = new Date(2024 - 1900, Calendar.MAY, 1);
+  private final Date holiday = new Date(2024 - 1900, Calendar.MARCH, 29);
+  private final Date futrueDate = new Date(2026 - 1900, Calendar.MAY, 1);
 
 
-  private Date goodDate;
-  private Date pastDate;
-  private Date holiday;
-  private Date futrueDate;
 
+  private final String stock = "GOOG";
+  private final String arsema = "arsema";
+  private final String fake = "Technology";
 
-  private String stock;
-  private String arsema;
-  private String fake;
 
   public ControllerMockTesting() throws FileNotFoundException {
-    this.goodDate = new Date(2024 - 1900, Calendar.JUNE, 18);
-    this.pastDate = new Date(2024 - 1900, Calendar.MAY, 1);
-    this.holiday = new Date(2024 - 1900, Calendar.MARCH, 29);
-    this.futrueDate = new Date(2026 - 1900, Calendar.MAY, 1);
-    this.fake = "Technology";
-
-
-    this.stock = "GOOG";
-    this.arsema = "arsema";
+   // in the case that portfolio is not found.
   }
-
-
-
-
-
 
   @Test
   public void testGetPortfolioButtons() throws FileNotFoundException {
@@ -63,13 +50,10 @@ public class ControllerMockTesting {
     IViewListener viewListener = new ViewListenerMock(log);
     ViewGUIImpl view = new ViewGUIImpl();
 
-
     view.getNewPortfolio("Arsema");
     viewListener.handleCreatePortfolios("Arsema");
     assertEquals("New portfolio created: Arsema", log.toString());
   }
-
-
 
   @Test
   public void testHandleBuyStocksGoodDate() throws IOException {
@@ -83,8 +67,50 @@ public class ControllerMockTesting {
     assertEquals("The current date is: Tue Jun 18 00:00:00 EDT 2024, " +
             "the current symbol is:  GOOG, the current number of being" +
             " bought shares is: 5, the portfolio is: arsema\n", log.toString());
-
   }
+
+  @Test
+  public void testHandleBuyNegativeStocksGoodDate() throws IOException {
+    StringBuilder log = new StringBuilder();
+    IViewListener viewListener = new ViewListenerMock(log);
+    ViewGUIImpl view = new ViewGUIImpl();
+
+    view.fireBuyStock(goodDate, stock, -5, arsema);
+
+    viewListener.handleBuyStock(goodDate, stock, -5, arsema);
+    assertEquals("Shares cannot be negative", log.toString());
+  }
+
+
+  @Test
+  public void testHandleSellNegativeStocksGoodDate() throws IOException {
+    StringBuilder log = new StringBuilder();
+    IViewListener viewListener = new ViewListenerMock(log);
+    ViewGUIImpl view = new ViewGUIImpl();
+
+    view.fireSellStock(goodDate, stock, -5, arsema);
+
+    viewListener.handleBuyStock(goodDate, stock, -5, arsema);
+    assertEquals("Shares cannot be negative", log.toString());
+  }
+
+
+
+  @Test
+  public void testHandleBuyStocksGoodDateWithPortThatDoesNotExist() throws IOException {
+    StringBuilder log = new StringBuilder();
+    IViewListener viewListener = new ViewListenerMock(log);
+    ViewGUIImpl view = new ViewGUIImpl();
+
+    view.fireBuyStock(goodDate, stock, 5, fake);
+
+    viewListener.handleBuyStock(goodDate, stock, 5, fake);
+    assertEquals("Cannot invoke \"model.ISmartPortfolio.addStockShare" +
+            "(String, model.IStock, double, java.time.LocalDate)\" " +
+            "because \"p\" is null", log.toString());
+  }
+
+
   @Test
   public void testHandleBuyStocksPastDate() throws IOException {
     StringBuilder log = new StringBuilder();
@@ -96,7 +122,6 @@ public class ControllerMockTesting {
 
     assertEquals("You cannot buy a stock from before " +
             "the most recent transaction :2024-05-01", log.toString());
-
   }
 
   @Test
@@ -110,7 +135,6 @@ public class ControllerMockTesting {
 
     assertEquals("You cannot buy a stock from before the most " +
             "recent transaction :2024-03-29", log.toString());
-
   }
 
   @Test
@@ -124,7 +148,6 @@ public class ControllerMockTesting {
 
     assertEquals("You cannot buy a stock from the future", log.toString());
   }
-
 
 
   @Test
@@ -182,13 +205,11 @@ public class ControllerMockTesting {
 
   }
 
-
   @Test
   public void testGetComposition() throws FileNotFoundException {
     StringBuilder log = new StringBuilder();
     IViewListener viewListener = new ViewListenerMock(log);
     ViewGUIImpl view = new ViewGUIImpl();
-
 
     viewListener.handleGetComposition(goodDate, arsema);
     view.fireComp(goodDate, arsema);
@@ -197,7 +218,6 @@ public class ControllerMockTesting {
             "the portfolio being found on: Tue Jun 18 00:00:00 EDT 2024, " +
             "this is the composition for the portfolio: arsema\n" +
             "[GOOG: 7.0]", log.toString());
-
   }
 
   @Test
@@ -206,8 +226,6 @@ public class ControllerMockTesting {
     IViewListener viewListener = new ViewListenerMock(log);
     ViewGUIImpl view = new ViewGUIImpl();
 
-
-
     viewListener.handleGetComposition(pastDate, arsema);
     view.fireComp(pastDate, arsema);
 
@@ -215,7 +233,6 @@ public class ControllerMockTesting {
             "of the portfolio being found on: Wed May 01 00:00:00 EDT " +
             "2024, this is the composition for the portfolio: arsema\n" +
             "[]", log.toString());
-
   }
 
   @Test
@@ -224,16 +241,14 @@ public class ControllerMockTesting {
     IViewListener viewListener = new ViewListenerMock(log);
     ViewGUIImpl view = new ViewGUIImpl();
 
-
-
     viewListener.handleGetComposition(futrueDate, arsema);
     view.fireComp(futrueDate, arsema);
+
 
     assertEquals("The current date is for the composition " +
             "of the portfolio being found on: Fri May 01 00:00:00 EDT 2026, " +
             "this is the composition for the portfolio: arsema\n" +
             "[GOOG: 7.0]", log.toString());
-
   }
 
   @Test
@@ -241,7 +256,6 @@ public class ControllerMockTesting {
     StringBuilder log = new StringBuilder();
     IViewListener viewListener = new ViewListenerMock(log);
     ViewGUIImpl view = new ViewGUIImpl();
-
 
     viewListener.handleGetComposition(holiday, arsema);
     view.fireComp(holiday, arsema);
@@ -251,7 +265,6 @@ public class ControllerMockTesting {
             "Fri Mar 29 00:00:00 EDT 2024, this is the " +
             "composition for the portfolio: arsema\n" +
             "[]", log.toString());
-
   }
 
 
@@ -272,7 +285,7 @@ public class ControllerMockTesting {
 
 
   @Test
-  public void testGetValueOnPastDate() throws FileNotFoundException{
+  public void testGetValueOnPastDate() throws FileNotFoundException {
     StringBuilder log = new StringBuilder();
     IViewListener viewListener = new ViewListenerMock(log);
     ViewGUIImpl view = new ViewGUIImpl();
@@ -284,11 +297,10 @@ public class ControllerMockTesting {
             "found on: Wed May 01 00:00:00 EDT 2024,this is the " +
             "value for the portfolio: arsema\n" +
             "0.0", log.toString());
-
   }
 
   @Test
-  public void testGetValueOnFutureDate() throws FileNotFoundException{
+  public void testGetValueOnFutureDate() throws FileNotFoundException {
     StringBuilder log = new StringBuilder();
     IViewListener viewListener = new ViewListenerMock(log);
     ViewGUIImpl view = new ViewGUIImpl();
@@ -297,15 +309,13 @@ public class ControllerMockTesting {
     view.fireValue(futrueDate, arsema);
 
     assertEquals("Stock does not exist", log.toString());
-
   }
 
   @Test
-  public void testGetValueOnHolidayDate() throws FileNotFoundException{
+  public void testGetValueOnHolidayDate() throws FileNotFoundException {
     StringBuilder log = new StringBuilder();
     IViewListener viewListener = new ViewListenerMock(log);
     ViewGUIImpl view = new ViewGUIImpl();
-
 
     view.fireValue(holiday, arsema);
     viewListener.handleGetValue(holiday, arsema);
@@ -313,10 +323,7 @@ public class ControllerMockTesting {
     assertEquals("The current date is for the value of portfolio being found on: " +
             "Fri Mar 29 00:00:00 EDT 2024,this is the value for the portfolio: arsema\n" +
             "0.0", log.toString());
-
   }
-
-
 
   // FIRE EVENTS TESTING
 
@@ -360,13 +367,11 @@ public class ControllerMockTesting {
     view.fireBuyStock(goodDate, stock, 5, arsema);
     viewListener.handleBuyStock(goodDate, stock, 5, arsema);
 
-
     assertEquals("The current date is: Tue Jun 18 00:00:00 EDT 2024, " +
             "the current symbol is:  GOOG, the current number of " +
             "being bought shares is: 5, the portfolio is: arsema\n", log.toString());
 
   }
-
 
 
   @Test
@@ -383,10 +388,6 @@ public class ControllerMockTesting {
             "is:  GOOG, the current number of shares being sold is: 5" +
             ", the portfolio is: arsema\n", log.toString());
   }
-
-
-
-
 
 
 
